@@ -1,17 +1,35 @@
-import React, { useEffect,useState } from 'react'
+import React from 'react'
+import Home from './pages/Home/Home'
+import Login from './pages/Login/Login'
+import Register from './pages/Register/Register'
+
+import {createBrowserRouter,RouterProvider} from 'react-router-dom'
+import Layout from './Layout'
+
+const router = createBrowserRouter([
+  {
+    path:'/',
+    element:<Layout/>,
+    children:[
+      {
+        index:true,
+        element:<Home/>
+      },
+      {
+        path:'login',
+        element:<Login/>
+      },
+      {
+        path:'register',
+        element:<Register/>
+      }
+    ]
+  }
+])
 
 function App() {
-  const[data,setData]=useState([])
-  useEffect(()=>{
-    fetch('http://localhost:8081/api/users')
-    .then(res=>res.json())
-    .then(data=>console.log(data))
-    .catch(err=>console.log(err))
-    },[])
   return (
-    <div>
-      
-    </div>
+    <RouterProvider router={router}/>
   )
 }
 
