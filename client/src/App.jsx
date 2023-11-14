@@ -5,6 +5,7 @@ import Register from './pages/Register/Register'
 
 import {createBrowserRouter,RouterProvider} from 'react-router-dom'
 import Layout from './Layout'
+import MovieDetail from './components/movieDetail/MovieDetail'
 
 const router = createBrowserRouter([
   {
@@ -16,15 +17,19 @@ const router = createBrowserRouter([
         element:<Home/>
       },
       {
-        path:'login',
-        element:<Login/>
+        path:'movie/:movieId',
+        element:<MovieDetail/>
       },
-      {
-        path:'register',
-        element:<Register/>
-      }
     ]
-  }
+  },
+  {
+    path:'/login',
+    element:<Login/>
+  },
+  {
+    path:'/register',
+    element:<Register/>
+  },
 ])
 
 function App() {

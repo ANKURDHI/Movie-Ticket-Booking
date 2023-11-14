@@ -19,9 +19,9 @@ const Navbar = () => {
           </nav>
         </div>
 
-        <div className='second'>
+        <Link to={'/login'} className='second'>
           Login
-        </div>
+        </Link>
       </div>
     </div>
   )

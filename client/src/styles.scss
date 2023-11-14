@@ -43,21 +43,28 @@ a {
     color: black;
 }
 
-.app {
-    // margin: ;
-   main {
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-   }
-}
+// .app {
+//     // margin: ;
+//    main {
+//     .container {
+//         max-width: 1200px;
+//         margin: 0 auto;
+//         display: flex;
+//         align-items: center;
+//         justify-content: space-between;
+//     }
+//    }
+// }
 
 .home {
    margin: 10px 0px 100px 0px;
+   .container {
+           max-width: 1200px;
+           margin: 0 auto;
+            display: flex;
+           align-items: center;
+           justify-content: space-between;
+        }
 }
 
 // @media screen and (max-width:605px) {
