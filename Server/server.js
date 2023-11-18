@@ -1,17 +1,24 @@
-const express = require('express');
-const cors = require('cors')
-
-const app = express()
-app.use(cors())
+require('dotenv').config();
+const express =require('express');
+const app=express()
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-const test=require("./Routes/register")
 
+// app.use((req,res,next)=>{
+//     res.header("Access-Control-Allow-Credentials",true);
+//     next();
+// })
 
- 
-app.use('/api',test);
-app.use('/api/signup',test);  
-// app.use('/api/login',test);      
+// app.use(cors({
+//     origin:`${process.env.CLIENT_PORT}`,
+//     credentials:true
+// }))
+
+const authRoute=require('./routes/auth')
+const userRoute=require('./routes/user')
+
+app.use("/api/auth",authRoute)
+app.use("/api/users",userRoute)
 
 app.listen(8081,()=>{
 console.log("listening");
