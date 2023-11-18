@@ -6,6 +6,7 @@ import Register from './pages/Register/Register'
 import {createBrowserRouter,RouterProvider} from 'react-router-dom'
 import Layout from './Layout'
 import MovieDetail from './components/movieDetail/MovieDetail'
+import SeatsBook from './pages/Seats/SeatsBook'
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
       {
         path:'movie/:movieId',
         element:<MovieDetail/>
+      },
+      {
+        path:'/seats',
+        element:<SeatsBook/>
       },
     ]
   },
