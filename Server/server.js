@@ -14,11 +14,14 @@ app.use(express.urlencoded({ extended: true }));
 //     credentials:true
 // }))
 
-const authRoute=require('./routes/auth')
-const userRoute=require('./routes/user')
+const authRoute=require('./Routes/auth')
+// const userRoute=require('./Routes/user')
+const moviesRoute=require('./Routes/movies')
+// const userRoute=require('./Routes/user')
 
 app.use("/api/auth",authRoute)
-app.use("/api/users",userRoute)
+// app.use("/api/users",userRoute)
+app.use("/api/movies",moviesRoute)
 
 app.listen(8081,()=>{
 console.log("listening");
