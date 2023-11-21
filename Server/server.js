@@ -17,10 +17,10 @@ app.use(express.urlencoded({ extended: true }));
 const authRoute=require('./Routes/auth')
 // const userRoute=require('./Routes/user')
 const moviesRoute=require('./Routes/movies')
-// const userRoute=require('./Routes/user')
+const userRoute=require('./Routes/user')
 
 app.use("/api/auth",authRoute)
-// app.use("/api/users",userRoute)
+app.use("/api/users",userRoute)
 app.use("/api/movies",moviesRoute)
 
 app.listen(8081,()=>{
