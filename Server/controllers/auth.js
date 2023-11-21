@@ -20,13 +20,13 @@ const token = (req,res)=>{
 
 const register = async(req,res)=>{
     try {        
-        const user= req.body.user;
+       
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
         const first=req.body.first_name;
         const last=req.body.last_name;
         const email=req.body.email;
-        const sql ="INSERT INTO web_user(User_ID, Password, First_Name, Last_Name, Email_ID) VALUES (?,?,?,?,?);";
-        await pool.query(sql,[user, hashedPassword, first, last, email])
+        const sql ="INSERT INTO web_user( Password, First_Name, Last_Name, Email_ID) VALUES (?,?,?,?);";
+        await pool.query(sql,[ hashedPassword, first, last, email])
         res.status(201).json({msg:"Created"})       
     } catch(err) {
         res.status(500).json(err)
@@ -34,14 +34,13 @@ const register = async(req,res)=>{
 }
 
 const login = async (req,res)=>{
-    const user = req.body.user;
-    console.log(user)
-    const sql = "SELECT * FROM Web_user WHERE User_ID = ?";   
-    const [data] = await pool.query(sql,[user]);  
-    console.log(data)
+    const email = req.body.email;
+    
+    const sql = "SELECT * FROM Web_user WHERE Email_ID = ?";   
+    const [data] = await pool.query(sql,[email]);  
     try {
         if (data[0] && await bcrypt.compare(req.body.password, data[0].Password)) {
-            const user1={name: user}
+            const user1={email: email}
             const accessToken= generateAccessToken(user1)
             const refreshToken= jwt.sign(user1,process.env.REFRESH_TOKEN_SECRET)
             refreshTokens.push(refreshToken);
