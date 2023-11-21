@@ -1,5 +1,6 @@
 import React from 'react'
 import './seatsbook.scss'
+import Seats from '../../components/seats/Seats'
 
 const SeatsBook = () => {
   return (
@@ -95,6 +96,16 @@ const SeatsBook = () => {
                 </div>
             </div>
 
+            <Seats/>
+            <div className="prices">
+                <div className="content">
+                    <div className="first">
+                        <div>Rs 700</div>
+                        <div>Ticket 1 x Rs700</div>
+                    </div>
+                    <button>BOOK TICKET</button>
+                </div>
+            </div>
         </div>
     </div>
   )
