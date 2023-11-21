@@ -19,43 +19,39 @@ const token = (req,res)=>{
 }
 
 const register = async(req,res)=>{
-    try {
-        
+    try {        
         const user= req.body.user;
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
         const first=req.body.first_name;
         const last=req.body.last_name;
         const email=req.body.email;
-        const sql ="INSERT INTO Web_user(User_ID, Password, First_Name, Last_Name, Email_ID) VALUES (?,?,?,?,?);";
-        pool.query(sql,[user, hashedPassword, first, last, email])
-        res.status(201).send()
-        
-        
-       
-    } catch {
-        res.status(500).send()
+        const sql ="INSERT INTO web_user(User_ID, Password, First_Name, Last_Name, Email_ID) VALUES (?,?,?,?,?);";
+        await pool.query(sql,[user, hashedPassword, first, last, email])
+        res.status(201).json({msg:"Created"})       
+    } catch(err) {
+        res.status(500).json(err)
     }
 }
 
 const login = async (req,res)=>{
     const user = req.body.user;
-    const sql = "SELECT * FROM Web_user WHERE User_ID = ?";
-    
+    console.log(user)
+    const sql = "SELECT * FROM Web_user WHERE User_ID = ?";   
     const [data] = await pool.query(sql,[user]);  
-  
-      
-      try {
+    console.log(data)
+    try {
         if (data[0] && await bcrypt.compare(req.body.password, data[0].Password)) {
             const user1={name: user}
             const accessToken= generateAccessToken(user1)
             const refreshToken= jwt.sign(user1,process.env.REFRESH_TOKEN_SECRET)
-            refreshTokens.push(refreshToken)
-            res.cookie("accessToken",accessToken,{httpOnly:true}).status(200).json({refreshToken:refreshToken});
+            refreshTokens.push(refreshToken);
+            const {Password,...others} = data[0];
+            res.cookie("accessToken",accessToken,{httpOnly:true}).status(200).json({refreshToken:refreshToken,others});
         } else {
-          res.send('Not Allowed');
+          res.staus(403).json('Not Allowed');
         }
-      } catch {
-        res.status(500).send();
+      } catch(err){
+        res.status(500).json(err);
       }
     };
 
