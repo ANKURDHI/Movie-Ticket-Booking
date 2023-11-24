@@ -17,7 +17,7 @@ const token = (req,res)=>{
     res.cookie("accessToken",accessToken,{httpOnly:true}).status(200).json("New Access Token");
 })
 }
-
+//signup
 const register = async(req,res)=>{
     try {        
        
@@ -32,7 +32,7 @@ const register = async(req,res)=>{
         res.status(500).json(err)
     }
 }
-
+//login api
 const login = async (req,res)=>{
     const email = req.body.email;
     
@@ -53,7 +53,7 @@ const login = async (req,res)=>{
         res.status(500).json(err);
       }
     };
-
+//logout api
 const logout = async (req,res)=>{
     try{
         res.clearCookie("accessToken",{sameSite:"none",secure:true}).status(200).json("User logged out successfully!")
