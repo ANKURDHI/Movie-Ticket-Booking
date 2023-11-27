@@ -19,8 +19,7 @@ const token = (req,res)=>{
 }
 //signup
 const register = async(req,res)=>{
-    try {        
-       
+    try {               
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
         const first=req.body.first_name;
         const last=req.body.last_name;
@@ -35,16 +34,21 @@ const register = async(req,res)=>{
 //login api
 const login = async (req,res)=>{
     const email = req.body.email;
-    
+    console.log(email,req.body.password)
     const sql = "SELECT * FROM Web_user WHERE Email_ID = ?";   
     const [data] = await pool.query(sql,[email]);  
+    console.log(data[0])
     try {
         if (data[0] && await bcrypt.compare(req.body.password, data[0].Password)) {
+            console.log('here');
             const user1={email: email}
+            
             const accessToken= generateAccessToken(user1)
+            
             const refreshToken= jwt.sign(user1,process.env.REFRESH_TOKEN_SECRET)
             refreshTokens.push(refreshToken);
             const {Password,...others} = data[0];
+            
             res.cookie("accessToken",accessToken,{httpOnly:true}).status(200).json({refreshToken:refreshToken,others});
         } else {
           res.staus(403).json('Not Allowed');

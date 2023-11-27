@@ -8,7 +8,7 @@ import { makeRequest } from '../../utils/axios';
 function Login() {
 //   const {loginUser} = useAuth();
   const [login, setLogin] = useState({
-    user:'',
+    email:'',
     password:''
 })
 const [err, setErr] = useState(null)
@@ -18,7 +18,7 @@ const handleSubmit = async(e) => {
     try {
       const response = await makeRequest.post(`/auth/login`,login);
     setLogin({
-      user:'',
+      email:'',
       password:''
     });
     // loginUser(response.data) 
@@ -42,12 +42,11 @@ const handleChange = (e) => {
     <div className='card'>
         <h1>Login</h1>
         <form onSubmit={handleSubmit}>
-          {/* <label htmlFor="email"></label>
-          <input type="email" name='email' placeholder='Email' handleChange={handleChange}/> */}
-          <label htmlFor="user"></label>
-          <input type="text" name='user' placeholder='Username' onChange={handleChange}/>
+          <label htmlFor="email"></label>
+          <input type="email" name='email' placeholder='Email' onChange={handleChange}/>
+        
           <label htmlFor="password"></label>
-          <input  name='password' placeholder='Password' onChange={handleChange}/>
+          <input type='password'  name='password' placeholder='Password' onChange={handleChange}/>
           {/* {err && err} */}
           <button className='btn btn-primary'>Login</button>
         </form>
