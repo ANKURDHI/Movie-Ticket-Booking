@@ -23,20 +23,14 @@ const getMovie = async (req,res)=>{
 }
 //for adding a new movie
 const addMovie = async (req, res) => {
+
+
     try {
         const { Movie_ID, Name, Language, Genre, Target_Audience,Image } = req.body;
-        const sql = "INSERT INTO Movie(Movie_ID, Name, Language, Genre, Target_Audience,Mpic) VALUES (?,?,?,?,?,?);";
+        const sql = "INSERT INTO Movie(Movie_ID, Name, Language, Genre, Target_Audience,Mpic) VALUES (?,?,?,?,?,?);"
         
-        // Convert pool.query into a Promise
-        const queryPromise = new Promise((resolve, reject) => {
-            pool.query(sql, [Movie_ID, Name, Language, Genre, Target_Audience,Image], (err, data) => {
-                if (err) reject(err);
-                resolve(data);
-            });
-        });
-
-        // Await the Promise
-        await queryPromise;
+        // Await the query directly
+        const result = await pool.query(sql, [Movie_ID, Name, Language, Genre, Target_Audience,Image]);
 
         res.status(201).json("Movie Added");
     } catch (err) {

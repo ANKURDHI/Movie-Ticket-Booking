@@ -37,13 +37,22 @@ app.post('/api/upload',upload.single('file'),(req,res)=>{
 })
 
 const authRoute=require('./Routes/auth')
-// const userRoute=require('./Routes/user')
+const theatreRoute=require('./Routes/theatre')
 const moviesRoute=require('./Routes/movies')
 const userRoute=require('./Routes/user')
+const screenRoute=require('./Routes/screen')
+const showRoute=require('./Routes/show')
+const bookingRoute=require('./Routes/booking')
+const ticketRoute=require('./Routes/ticket')
 
 app.use("/api/auth",authRoute)
 app.use("/api/users",userRoute)
 app.use("/api/movies",moviesRoute)
+app.use("/api/theatre",theatreRoute)
+app.use("/api/screen",screenRoute)
+app.use("/api/show",showRoute)
+app.use("/api/booking",bookingRoute)
+app.use("/api/ticket",ticketRoute)
 
 
 
