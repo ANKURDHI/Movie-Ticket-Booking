@@ -12,7 +12,7 @@ const getTheatre = async (req,res)=>{
     const Name = req.body.Name;
   
     try{        
-        let q='SELECT * FROM Theatre WHERE Name_of_Theatre = ?;'
+        let q="SELECT DISTINCT t.Name_of_Theatre FROM Theatre t JOIN Screen s ON t.Theatre_ID = s.Theatre_ID JOIN show1 sh ON s.Screen_ID = sh.Screen_ID JOIN Movie m ON sh.Movie_ID = m.Movie_ID WHERE m.Name = ?;"
         const [response] = await pool.query(q,[Name])
         res.status(200).json(response)
     }
