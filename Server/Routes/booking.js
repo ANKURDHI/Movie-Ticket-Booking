@@ -4,7 +4,8 @@ const {
     allBooking,
     addBooking,
     deleteBooking,
-    getBooking
+    getBooking,
+    
     
 } = require('../controllers/booking');
 

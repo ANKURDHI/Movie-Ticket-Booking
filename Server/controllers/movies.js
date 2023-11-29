@@ -1,13 +1,52 @@
 const { pool }  = require('../util/db');
 // get all movie data
-
-
 const allMovies =  async(req,res)=>{
     const sql ="select * from Movie";
     const [data] = await pool.query(sql); 
        
     return res.status(201).json(data);
 }
+
+//getGenre
+const getGenre = async (req,res)=>{
+    const Genre = req.body.Genre;
+  
+    try{        
+        let q='SELECT * FROM Movie WHERE Genre = ?;'
+        const [response] = await pool.query(q,[Genre])
+        res.status(200).json(response)
+    }
+    catch(err){
+        res.status(500).json(err)
+    }
+}
+//getLanguage
+const getLanguage = async (req,res)=>{
+    const Language = req.body.Language;
+  
+    try{        
+        let q='SELECT * FROM Movie WHERE Language = ?;'
+        const [response] = await pool.query(q,[Language])
+        res.status(200).json(response)
+    }
+    catch(err){
+        res.status(500).json(err)
+    }
+}
+//getSort
+const getSort = async (req,res)=>{
+    const sort = req.body.sort;
+  
+    try{        
+        let q='SELECT * FROM Movie WHERE Name LIKE ? ; '
+        const [response] = await pool.query(q,[sort])
+        res.status(200).json(response)
+    }
+    catch(err){
+        res.status(500).json(err)
+    }
+}
+
 //get movie
 const getMovie = async (req,res)=>{
     const Name = req.body.Name;
@@ -59,5 +98,8 @@ module.exports = {
     allMovies,
     addMovie,
     deleteMovie,
-    getMovie
+    getMovie,
+    getGenre,
+    getLanguage,
+    getSort
 }

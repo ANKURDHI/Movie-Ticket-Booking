@@ -10,10 +10,11 @@ const allTheatre =  async(req,res)=>{
 //get Theatre
 const getTheatre = async (req,res)=>{
     const Name = req.body.Name;
+    const Date = req.body.date;
   
     try{        
-        let q="SELECT DISTINCT t.Name_of_Theatre FROM Theatre t JOIN Screen s ON t.Theatre_ID = s.Theatre_ID JOIN show1 sh ON s.Screen_ID = sh.Screen_ID JOIN Movie m ON sh.Movie_ID = m.Movie_ID WHERE m.Name = ?;"
-        const [response] = await pool.query(q,[Name])
+        let q="SELECT t.Name_of_Theatre, sh.* FROM Theatre t  JOIN Screen s ON t.Theatre_ID = s.Theatre_ID  JOIN show1 sh ON s.Screen_ID = sh.Screen_ID  JOIN Movie m ON sh.Movie_ID = m.Movie_ID  WHERE m.Name = ? AND sh.Show_Date = ?;"
+        const [response] = await pool.query(q,[Name,Date])
         res.status(200).json(response)
     }
     catch(err){

@@ -23,18 +23,29 @@ const getBooking = async (req,res)=>{
 //for adding a new Booking
 const addBooking = async (req, res) => {
     try {
-        const { Booking_ID, No_of_Tickets, Total_Cost, Card_Number, Name_on_card, User_ID, Show_ID } = req.body;
-        const sql = "INSERT INTO Booking (Booking_ID, No_of_Tickets, Total_Cost, Card_Number, Name_on_card, User_ID, Show_ID) VALUES (?,?,?,?,?,?,?);"
+        const { Booking_ID, No_of_Tickets, Total_Cost, Card_Number, Name_on_card, User_ID, Show_ID ,seats} = req.body;
         
-        // Await the query directly
-        const result = await pool.query(sql, [Booking_ID, No_of_Tickets, Total_Cost, Card_Number, Name_on_card, User_ID, Show_ID]);
+        // Start the transaction
+        await pool.query("START TRANSACTION");
+
+        // Insert into Booking
+        await pool.query("INSERT INTO Booking (Booking_ID, No_of_Tickets, Total_Cost, Card_Number, Name_on_card, User_ID, Show_ID)  VALUES (?, ?, ?, ?, ?, ?, ?)", [Booking_ID, No_of_Tickets, Total_Cost, Card_Number, Name_on_card, User_ID, Show_ID]);
+
+        // Update show1
+        await pool.query("UPDATE show1  SET Seats_Remaining = Seats_Remaining - ?  WHERE Show_ID = ?", [seats, Show_ID]);
+
+        // Commit the transaction
+        await pool.query("COMMIT");
 
         res.status(201).json("Booking Done");
     } catch (err) {
+        // If there is any error, rollback the transaction
+        await pool.query("ROLLBACK");
         console.error(err);
         res.status(500).send();
     }
 };
+
 
 
 //Remove Booking
