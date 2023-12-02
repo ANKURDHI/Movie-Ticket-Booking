@@ -23,7 +23,7 @@ const getBooking = async (req,res)=>{
 //for adding a new Booking
 const addBooking = async (req, res) => {
     try {
-        const { Booking_ID, No_of_Tickets, Total_Cost, Card_Number, Name_on_card, User_ID, Show_ID ,seats} = req.body;
+        const { Booking_ID, No_of_Tickets, Total_Cost, Card_Number, Name_on_card, User_ID, Show_ID, Seat_ID } = req.body;
         
         // Start the transaction
         await pool.query("START TRANSACTION");
@@ -32,7 +32,18 @@ const addBooking = async (req, res) => {
         await pool.query("INSERT INTO Booking (Booking_ID, No_of_Tickets, Total_Cost, Card_Number, Name_on_card, User_ID, Show_ID)  VALUES (?, ?, ?, ?, ?, ?, ?)", [Booking_ID, No_of_Tickets, Total_Cost, Card_Number, Name_on_card, User_ID, Show_ID]);
 
         // Update show1
-        await pool.query("UPDATE show1  SET Seats_Remaining = Seats_Remaining - ?  WHERE Show_ID = ?", [seats, Show_ID]);
+        await pool.query("UPDATE show1 SET Seats_Remaining = Seats_Remaining - 1 WHERE Show_ID = ?", [Show_ID]);
+
+        // Select the seat for update, locking the row
+        const [seat] = await pool.query("SELECT * FROM Seats WHERE Seat_ID = ? FOR UPDATE", [Seat_ID]);
+            
+        // Check if the seat is already booked
+        if(seat.status === 'Booked') {
+            throw new Error(`Seat ${Seat_ID} is already booked`);
+        }
+
+        // If the seat is not booked, update the status to 'Booked'
+        await pool.query("UPDATE Seats SET status = 'Booked' WHERE Seat_ID = ?", [Seat_ID]);
 
         // Commit the transaction
         await pool.query("COMMIT");
@@ -45,6 +56,9 @@ const addBooking = async (req, res) => {
         res.status(500).send();
     }
 };
+
+
+
 
 
 
