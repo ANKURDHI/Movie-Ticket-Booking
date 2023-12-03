@@ -1,9 +1,14 @@
 .navbar {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
     background: var(--color-white);
     padding: 10px;
+    box-shadow: rgba(125, 125, 126, 0.2) 0px 4px 5px 0px;
 
     .container {
-        max-width: 1200px;
+        max-width: 1300px;
         margin: 0 auto;
         display: flex;
         align-items: center;

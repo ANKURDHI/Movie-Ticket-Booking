@@ -36,14 +36,14 @@ app.post('/api/upload',upload.single('file'),(req,res)=>{
     res.status(200).json(file.filename);
 })
 
-const authRoute=require('./Routes/auth')
-const theatreRoute=require('./Routes/theatre')
-const moviesRoute=require('./Routes/movies')
-const userRoute=require('./Routes/user')
-const screenRoute=require('./Routes/screen')
-const showRoute=require('./Routes/show')
-const bookingRoute=require('./Routes/booking')
-const ticketRoute=require('./Routes/ticket')
+const authRoute=require('./routes/auth')
+const theatreRoute=require('./routes/theatre')
+const moviesRoute=require('./routes/movies')
+const userRoute=require('./routes/user')
+const screenRoute=require('./routes/screen')
+const showRoute=require('./routes/show')
+const bookingRoute=require('./routes/booking')
+const ticketRoute=require('./routes/ticket')
 
 app.use("/api/auth",authRoute)
 app.use("/api/users",userRoute)

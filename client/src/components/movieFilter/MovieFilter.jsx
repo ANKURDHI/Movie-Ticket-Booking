@@ -11,29 +11,28 @@ const MovieFilter = () => {
   return (
     <div className="movie-filter">
        <div className='start'>
-        <BsFilter/>
-         Filter
+        <BsFilter size={20}/>
        </div>
 
        <div className="option">
          <LiaLanguageSolid/>
          Languages
-         <BiDownArrow/>
+         &#9662;
        </div>
        <div className="option">
          <GrCircleInformation/>
          Format
-         <BiDownArrow/>
+         &#9662;
        </div>
        <div className="option">
          <AiOutlineSortAscending/>
          Sort
-         <BiDownArrow/>
+         &#9662;
        </div>
        <div className="option">
          <BiMovie/>
          Genres
-         <BiDownArrow/>
+         &#9662;
        </div>
     </div>
   )
