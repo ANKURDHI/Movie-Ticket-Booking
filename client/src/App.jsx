@@ -49,11 +49,11 @@ const router = createBrowserRouter([
         element:<Home/>
       },
       {
-        path:'movie/:movieId',
+        path:'movie/:movieId/:date',
         element:<MovieDetail/>
       },
       {
-        path:'/seats',
+        path:'/seats/:screenId',
         element:<SeatsBook/>
       },
       {
