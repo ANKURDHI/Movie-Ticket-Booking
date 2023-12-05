@@ -44,6 +44,7 @@ const screenRoute=require('./Routes/screen')
 const showRoute=require('./Routes/show')
 const bookingRoute=require('./Routes/booking')
 const ticketRoute=require('./Routes/ticket')
+const seatRoute=require('./Routes/seat')
 
 app.use("/api/auth",authRoute)
 app.use("/api/users",userRoute)
@@ -53,6 +54,7 @@ app.use("/api/screen",screenRoute)
 app.use("/api/show",showRoute)
 app.use("/api/booking",bookingRoute)
 app.use("/api/ticket",ticketRoute)
+app.use("/api/seat",seatRoute)
 
 
 
