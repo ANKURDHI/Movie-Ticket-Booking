@@ -1,4 +1,5 @@
 import React from 'react'
+import './home.scss'
 import Movies from '../../components/movies/Movies'
 
 function Home() {

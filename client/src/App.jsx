@@ -4,7 +4,12 @@ import Login from './pages/Login/Login'
 import Register from './pages/Register/Register'
 import {useAuth} from './context/AuthContext'
 
-import {createBrowserRouter,RouterProvider} from 'react-router-dom'
+import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
+
+import {createBrowserRouter,RouterProvider,useNavigate} from 'react-router-dom'
 import Layout from './Layout'
 import MovieDetail from './components/movieDetail/MovieDetail'
 import SeatsBook from './pages/Seats/SeatsBook'
@@ -32,6 +37,8 @@ const ProtectedRoute = ({children}) => {
   return user ? children : null;
 }
 
+const queryClient = new QueryClient();
+
 const router = createBrowserRouter([
   {
     path:'/',
@@ -47,9 +54,7 @@ const router = createBrowserRouter([
       },
       {
         path:'/seats',
-        element:<ProtectedRoute>
-           <SeatsBook/>
-        </ProtectedRoute>
+        element:<SeatsBook/>
       },
       {
         path:'/order',
@@ -69,7 +74,9 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <RouterProvider router={router}/>
+    <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router}/>
+     </QueryClientProvider>
   )
 }
 

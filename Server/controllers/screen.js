@@ -13,6 +13,7 @@ const getScreen = async (req,res)=>{
   
     try{        
         let q='SELECT * FROM Screen WHERE Theatre_ID = ?;'
+        // q="SELECT s.Seat_ID, s.Seat_Number FROM Theatre t JOIN Screen sc ON t.Theatre_ID = sc.Theatre_ID     JOIN Show sh ON sc.Screen_ID = sh.Screen_ID         JOIN Seat s ON sh.Screen_ID = s.Screen_ID            WHERE sh.Movie_ID = ? AND sh.Screen_ID = ?;"
         const [response] = await pool.query(q,[Theatre_ID])
         res.status(200).json(response)
     }

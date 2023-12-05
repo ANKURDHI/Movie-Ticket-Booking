@@ -63,7 +63,6 @@ const getMovie = async (req,res)=>{
 //for adding a new movie
 const addMovie = async (req, res) => {
 
-
     try {
         const { Movie_ID, Name, Language, Genre, Target_Audience,Image } = req.body;
         const sql = "INSERT INTO Movie(Movie_ID, Name, Language, Genre, Target_Audience,Mpic) VALUES (?,?,?,?,?,?);"

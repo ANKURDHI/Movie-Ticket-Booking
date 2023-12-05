@@ -1,8 +1,19 @@
 import React from 'react'
 import './moviedetail.scss'
 import { FaHeart } from "react-icons/fa";
+// import {
+//   useQuery,
+//   useMutation,
+//   useQueryClient
+// } from '@tanstack/react-query'
 
 const MovieDetail = () => {
+     // const { isLoading, error, data } = useQuery({    
+  //   queryKey:['theatres'],queryFn: async() =>{
+  //     const res = await makeRequest.get(`/theatre`);
+  //     return res.data;
+  //   }
+  // });
   return (
     <div className="movie-detail">
        <div className="image-wrapper">
