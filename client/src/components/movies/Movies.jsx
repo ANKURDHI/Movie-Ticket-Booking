@@ -19,7 +19,7 @@ const Movies = () => {
       return res.data;
     }
   });
-  // {data && setMovies(data)}
+  
   return (
     <div className="movies">
         <h2>Movies</h2>

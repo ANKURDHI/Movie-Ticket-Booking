@@ -26,18 +26,19 @@ const getUsers = async (req,res)=>{
     }
 }
 
-// const refetchUser = async(req,res) => {
-//     const {id} = req.userData;
-//     try{        
-//         let q='SELECT * FROM users WHERE users.uid=?;'
-//         const [response] = await pool.query(q,[id])
-//         const {password,...others} = response[0]
-//         res.status(200).json(others)
-//     }
-//     catch(err){
-//         res.status(500).json(err)
-//     }
-// }
+const refetchUser = async(req,res) => {
+    console.log('abc')
+    const {id} = req.userData;
+    try{        
+        let q='SELECT * FROM Web_user WHERE User_ID=?;'
+        const [response] = await pool.query(q,[id])
+        const {password,...others} = response[0]
+        res.status(200).json(others)
+    }
+    catch(err){
+        res.status(500).json(err)
+    }
+}
 // update a user information ##check again
 const updateUser = async (req,res)=>{   
     try{
@@ -73,7 +74,7 @@ const deleteUser = async (req,res)=>{
 module.exports={
     getUsers,
     getUser,
-    // refetchUser,
+    refetchUser,
     updateUser,
     deleteUser
 }

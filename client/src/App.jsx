@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Home from './pages/Home/Home'
 import Login from './pages/Login/Login'
 import Register from './pages/Register/Register'
@@ -14,6 +14,7 @@ import Layout from './Layout'
 import MovieDetail from './components/movieDetail/MovieDetail'
 import SeatsBook from './pages/Seats/SeatsBook'
 import Order from './pages/order/Order'
+import { makeRequest } from './utils/axios'
 
 const ProtectedRoute = ({children}) => {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ const ProtectedRoute = ({children}) => {
           loginUser(res.data)
         } catch (error) {
           console.log(error);
-          if(error.response.status === 401) navigate('/');
+          navigate('/login');
         }
       }
       fetchData();
@@ -49,16 +50,20 @@ const router = createBrowserRouter([
         element:<Home/>
       },
       {
-        path:'movie/:movieId/:date',
+        path:'movie/:movieId',
         element:<MovieDetail/>
       },
       {
-        path:'/seats/:screenId',
-        element:<SeatsBook/>
+        path:'/seats/:showId/:screenId',
+        element:<ProtectedRoute>
+          <SeatsBook/>
+        </ProtectedRoute>
       },
       {
-        path:'/order',
-        element:<Order/>
+        path:'/order/:userId',
+        element:<ProtectedRoute>
+          <Order/>
+        </ProtectedRoute>
       },
     ]
   },

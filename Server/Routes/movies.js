@@ -11,7 +11,7 @@ const {
 } = require('../controllers/movies');
 
 router.get("/allMovies",allMovies)
-router.get("/getMovie",getMovie)
+router.get("/getMovie/:movieId",getMovie)
 router.post("/addMovie",addMovie)
 router.delete("/deleteMovie",deleteMovie)
 router.get("/getGenre",getGenre)

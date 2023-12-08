@@ -1,178 +1,39 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Seat from './Seat'
 import './seats.scss'
-const SEATS=[
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-]
+import {
+  useQuery,
+  useMutation,
+  useQueryClient
+} from '@tanstack/react-query'
+import { makeRequest } from '../../utils/axios';
+import { Link,useNavigate } from 'react-router-dom';
+import {useAuth} from '../../context/AuthContext'
 
-const Seats = () => {
+const Seats = ({screenId,showId}) => {
+  const {user} = useAuth()
+  const navigate = useNavigate();
+  const [bookedSeats, setBookedSeats] = useState([])
+  const { isLoading, error, data } = useQuery({    
+    queryKey:['seats'],queryFn: async() =>{
+      const res = await makeRequest.get(`/seats/getSeats/${showId}/${screenId}`);
+      return res.data;
+    }
+  });
+
+  const handleSubmit = async(e) => {
+      e.preventDefault();
+    try {
+      const response = await makeRequest.put(`/seats/bookSeat/${screenId}/${showId}`,{seatIds:bookedSeats});
+    if(response.data){
+      navigate(`/order/${user.User_ID}`,{replace:true})
+    }     
+    } catch (err) {
+      console.log(err);
+      // setErr(err.response.data)
+    }
+}
+
   return (
     <div className="seats">
         <div className="container">
@@ -180,8 +41,8 @@ const Seats = () => {
                 <h3>SELECT YOUR SEATS</h3>
             <div className="seat-matrix">
                 {
-                  SEATS.map(seat=>(
-                     <Seat/>
+                  data&&data.map(seat=>(
+                     <Seat key={data.Seat_ID} seat={seat} setBookedSeats={setBookedSeats}/>
                   ))
                 }
             </div>
@@ -196,6 +57,17 @@ const Seats = () => {
             </div>
             </div>
         </div>
+        {
+          bookedSeats.length>0&&<div className="prices">
+          <div className="content">
+              <div className="first">
+                  <div>Rs {bookedSeats.length*700}</div>
+                  <div>Ticket {bookedSeats.length} x Rs700</div>
+              </div>
+              <Link to={'/order'}><button onClick={handleSubmit}>BOOK TICKET</button></Link>
+          </div>
+      </div>
+        }
     </div>
   )
 }

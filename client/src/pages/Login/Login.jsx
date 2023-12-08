@@ -2,11 +2,11 @@ import React,{useState} from 'react'
 import './login.scss';
 import { Link,useNavigate } from 'react-router-dom'
 import { makeRequest } from '../../utils/axios';
-// import {useAuth} from '../../context/AuthContext'
+import {useAuth} from '../../context/AuthContext'
 // import axios from 'axios';
 
 function Login() {
-//   const {loginUser} = useAuth();
+  const {loginUser} = useAuth();
   const [login, setLogin] = useState({
     email:'',
     password:''
@@ -21,7 +21,7 @@ const handleSubmit = async(e) => {
       email:'',
       password:''
     });
-    // loginUser(response.data) 
+    loginUser(response.data) 
     if(response.data){
       navigate('/',{replace:true})
     }     

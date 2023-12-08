@@ -6,8 +6,7 @@ const getSeat = async (req,res)=>{
     try{        
         let q='SELECT * FROM Seats WHERE Seat_ID = ?;'
         const [response] = await pool.query(q,[SeatID])
-        const {password,...others} = response[0]
-        res.status(200).json(others)
+        res.status(200).json(response)
     }
     catch(err){
         res.status(500).json(err)
@@ -15,11 +14,11 @@ const getSeat = async (req,res)=>{
 }
 //get all seats
 const getSeats = async (req,res)=>{
+    const {screenId,showId} = req.params
     try{        
-        let q='SELECT * FROM Seats;'
-        const [response] = await pool.query(q);
-        const {password,...others} = response[0]
-        res.status(200).json(others)
+        let q='SELECT * FROM Seats WHERE Screen_ID=? AND Show_ID=?;'
+        const [response] = await pool.query(q,[screenId,showId]);
+        res.status(200).json(response)
     }
     catch(err){
         res.status(500).json(err)
@@ -27,16 +26,19 @@ const getSeats = async (req,res)=>{
 }
 
 // update a seat information 
-const updateSeat = async (req,res)=>{   
+const updateSeat = async (req,res)=>{  
+    const {id} = req.userData;
+    const {seatIds}=req.body;
+    const {screenId,showId} = req.params; 
     try{
-        const q = "UPDATE Seats SET Seat_ID=?, User_ID=?, price=?, Screen_ID=?, status=? WHERE Seat_ID=?;";
+        const placeholders = Array(seatIds.length).fill('?').join(', ');
+
+        const q = `UPDATE Seats SET User_ID=?, status='Booked' WHERE Seat_ID IN (${placeholders}) AND Show_ID=? AND Screen_ID=?;`;
         const values = [
-            req.body.Seat_ID,
-            req.body.User_ID,
-            req.body.price,
-            req.body.Screen_ID,
-            req.body.status,
-            req.body.Seat_ID
+        id,
+        ...seatIds, // Spread the seatIds array to provide individual values
+        showId,
+        screenId
         ];
         await pool.query(q, values);      
         res.status(200).json("Seat has been edited");
@@ -63,8 +65,6 @@ const deleteSeat = async (req,res)=>{
 
 //for adding a new seat
 const addSeat = async (req, res) => {
-
-
     try {
         const { Seat_ID, User_ID, price, Screen_ID, status } = req.body;
         const sql = "INSERT INTO Seats(Seat_ID, User_ID, price, Screen_ID, status) VALUES (?,?,?,?,?);"
