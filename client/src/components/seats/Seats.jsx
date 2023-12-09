@@ -9,6 +9,7 @@ import {
 import { makeRequest } from '../../utils/axios';
 import { Link,useNavigate } from 'react-router-dom';
 import {useAuth} from '../../context/AuthContext'
+import Loader from '../Loader/Loader'
 
 const Seats = ({screenId,showId}) => {
   const {user} = useAuth()
@@ -26,7 +27,8 @@ const Seats = ({screenId,showId}) => {
     try {
       const response = await makeRequest.put(`/seats/bookSeat/${screenId}/${showId}`,{seatIds:bookedSeats});
     if(response.data){
-      navigate(`/order/${user.User_ID}`,{replace:true})
+      console.log(showId,screenId)
+      navigate(`/order/${showId}/${screenId}`,{replace:true})
     }     
     } catch (err) {
       console.log(err);
@@ -37,7 +39,8 @@ const Seats = ({screenId,showId}) => {
   return (
     <div className="seats">
         <div className="container">
-            <div className="content">
+          {isLoading?<Loader/>:error?<h3>Try Again</h3>:(
+                <div className="content">
                 <h3>SELECT YOUR SEATS</h3>
             <div className="seat-matrix">
                 {
@@ -56,6 +59,8 @@ const Seats = ({screenId,showId}) => {
                 </svg>
             </div>
             </div>
+          )}
+            
         </div>
         {
           bookedSeats.length>0&&<div className="prices">
@@ -64,7 +69,7 @@ const Seats = ({screenId,showId}) => {
                   <div>Rs {bookedSeats.length*700}</div>
                   <div>Ticket {bookedSeats.length} x Rs700</div>
               </div>
-              <Link to={'/order'}><button onClick={handleSubmit}>BOOK TICKET</button></Link>
+              <button onClick={handleSubmit}>BOOK TICKET</button>
           </div>
       </div>
         }

@@ -8,6 +8,7 @@ import {
   useQueryClient
 } from '@tanstack/react-query'
 import { Link, useNavigate,  useParams } from 'react-router-dom';
+import Loader from '../Loader/Loader';
 // import { useAuth } from '../../context/AuthContext';
 
 const MovieDetail = () => {
@@ -62,7 +63,7 @@ const MovieDetail = () => {
   return (
     <div className="movie-detail">
     {
-      isLoading?"Loading...":
+      movieLoading?"Loading...":
       <div className="image-wrapper">
        <img src={movieData[0].Mpic} alt="" />
        <div className="overlay">
@@ -140,7 +141,9 @@ const MovieDetail = () => {
                 </div>
             </div>
 
-            <div className='cinema-display'>
+            {
+              isLoading?<Loader/>:error?<h3>Error</h3>:(
+                <div className='cinema-display'>
                 {groupedData &&
                     groupedData.map(theatre => (
                         <div className="cinema" key={theatre.Theatre_ID}>
@@ -167,6 +170,8 @@ const MovieDetail = () => {
                         </div>
                     ))}
             </div>
+              )
+            }
 
         </div>
        </div>

@@ -13,7 +13,7 @@ import {createBrowserRouter,RouterProvider,useNavigate} from 'react-router-dom'
 import Layout from './Layout'
 import MovieDetail from './components/movieDetail/MovieDetail'
 import SeatsBook from './pages/Seats/SeatsBook'
-import Order from './pages/order/Order'
+import Order from './pages/Order/Order'
 import { makeRequest } from './utils/axios'
 
 const ProtectedRoute = ({children}) => {
@@ -21,22 +21,23 @@ const ProtectedRoute = ({children}) => {
   const { user,loginUser } = useAuth();
 
   useEffect(() => {
-    if (!user) {
-      async function fetchData(){
-        try {
-          const res = await makeRequest.get(`/users/refetch`);
-          loginUser(res.data)
-        } catch (error) {
-          console.log(error);
-          navigate('/login');
-        }
+    async function fetchData() {
+      try {
+        const res = await makeRequest.get(`/users/refetch`);
+        loginUser(res.data);
+      } catch (error) {
+        console.log(error);
+        navigate('/login');
       }
+    }
+
+    if (!user) {
       fetchData();
     }
-  }, [user, navigate]);
+  }, [user, navigate, loginUser]);
 
   return user ? children : null;
-}
+};
 
 const queryClient = new QueryClient();
 
@@ -60,7 +61,7 @@ const router = createBrowserRouter([
         </ProtectedRoute>
       },
       {
-        path:'/order/:userId',
+        path:'/order/:showId/:screenId',
         element:<ProtectedRoute>
           <Order/>
         </ProtectedRoute>
