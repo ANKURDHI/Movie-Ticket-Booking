@@ -9,11 +9,11 @@ const allBooking =  async(req,res)=>{
 }
 //get Booking
 const getBooking = async (req,res)=>{
-    const {id} = req.userData;
+    const User_ID = req.body.User_ID;
   
     try{        
         let q='SELECT Seats.*,Theatre.*, Screen.*,  Movie.* FROM Seats JOIN Screen ON Seats.Screen_ID = Screen.Screen_ID JOIN Theatre ON Screen.Theatre_ID = Theatre.Theatre_ID JOIN show1 ON Screen.Screen_ID = show1.Screen_ID JOIN Movie ON show1.Movie_ID = Movie.Movie_ID WHERE Seats.User_ID = ? AND Seats.status = "Booked";'
-        const [response] = await pool.query(q,[id])
+        const [response] = await pool.query(q,[User_ID])
         res.status(200).json(response)
     }
     catch(err){
