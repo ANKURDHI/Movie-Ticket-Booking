@@ -8,7 +8,7 @@ const {
 } = require('../controllers/theatre');
 
 router.get("/allTheatre",allTheatre)
-router.get("/getTheatre",getTheatre)
+router.get("/getTheatre/:movieId/:date",getTheatre)
 router.post("/addTheatre",addTheatre)
 router.delete("/deleteTheatre",deleteTheatre)
 

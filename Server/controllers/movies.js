@@ -49,11 +49,11 @@ const getSort = async (req,res)=>{
 
 //get movie
 const getMovie = async (req,res)=>{
-    const Name = req.body.Name;
-  
+    console.log('getmovie')
+    const {movieId} = req.params;  
     try{        
-        let q='SELECT * FROM Movie WHERE Name = ?;'
-        const [response] = await pool.query(q,[Name])
+        let q='SELECT * FROM Movie WHERE Movie_ID = ?;'
+        const [response] = await pool.query(q,[movieId])
         res.status(200).json(response)
     }
     catch(err){

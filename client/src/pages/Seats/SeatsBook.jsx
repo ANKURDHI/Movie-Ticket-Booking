@@ -1,8 +1,10 @@
 import React from 'react'
 import './seatsbook.scss'
 import Seats from '../../components/seats/Seats'
+import { useParams } from 'react-router-dom'
 
 const SeatsBook = () => {
+  const {showId,screenId} = useParams()
   return (
     <div className="seatsbook">
         <div className="container">
@@ -96,8 +98,9 @@ const SeatsBook = () => {
                 </div>
             </div>
 
-            <Seats/>
-            <div className="prices">
+            <Seats showId={showId} screenId={screenId}/>
+
+            {/* <div className="prices">
                 <div className="content">
                     <div className="first">
                         <div>Rs 700</div>
@@ -105,7 +108,8 @@ const SeatsBook = () => {
                     </div>
                     <button>BOOK TICKET</button>
                 </div>
-            </div>
+            </div> */}
+
         </div>
     </div>
   )

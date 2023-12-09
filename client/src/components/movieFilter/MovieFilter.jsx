@@ -9,31 +9,41 @@ import './moviefilter.scss'
 
 const MovieFilter = () => {
   return (
-    <div className="movie-filter">
-       <div className='start'>
-        <BsFilter size={20}/>
+    <div className="filter">
+       <div className="movie-filter">
+          <div className='start'>
+            <BsFilter size={20}/>
+          </div>
+          <div className="choices">
+            <div className="select-container">
+              <label htmlFor="beautifulSelect"></label>
+              <select id="beautifulSelect" className="custom-select">
+                <option value="option1">Language</option>
+                <option value="option2">Option 2</option>
+                <option value="option3">Option 3</option>
+              </select>
+            </div>
+            <div className="select-container">
+              <label htmlFor="beautifulSelect"></label>
+              <select id="beautifulSelect" className="custom-select">
+                <option value="option1">Genre</option>
+                <option value="option2">Option 2</option>
+                <option value="option3">Option 3</option>
+              </select>
+            </div>
+            <div className="select-container">
+              <label htmlFor="beautifulSelect"></label>
+              <select id="beautifulSelect" className="custom-select">
+                <option value="option1">Format</option>
+                <option value="option2">Option 2</option>
+                <option value="option3">Option 3</option>
+              </select>
+            </div>
+          </div>
        </div>
-
-       <div className="option">
-         <LiaLanguageSolid/>
-         Languages
-         &#9662;
-       </div>
-       <div className="option">
-         <GrCircleInformation/>
-         Format
-         &#9662;
-       </div>
-       <div className="option">
-         <AiOutlineSortAscending/>
-         Sort
-         &#9662;
-       </div>
-       <div className="option">
-         <BiMovie/>
-         Genres
-         &#9662;
-       </div>
+      {/* <div cla>
+        ldks;
+      </div> */}
     </div>
   )
 }
