@@ -36,6 +36,12 @@ app.post('/webhook', express.raw({type: '*/*'}), async(request, response) => {
           Show_ID: session.metadata.Show_ID,
           Seat_ID: session.metadata.Seat_ID,
         };
+        const ticketData={
+          Ticket_ID:session.metadata.Ticket_ID,
+          Booking_ID: session.metadata.Booking_ID,
+          Price: session.metadata.Total_Cost,
+
+        }
 
         const apiResponse = await fetch('http://localhost:8081/api/booking/addBooking', {
           method: 'POST',
@@ -48,9 +54,22 @@ app.post('/webhook', express.raw({type: '*/*'}), async(request, response) => {
         const data = await apiResponse.json();
 
         console.log(data);
+        //ticket
+        const apiResp = await fetch('http://localhost:8081/api/ticket/addTicket', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(ticketData),
+        });
+
+        const data1 = await apiResp.json();
+
+        console.log(data1);
       } catch (err) {
         console.log(`API call failed: ${err.message}`);
       }
+      
   
       // Handle successful checkout
       break;
@@ -138,8 +157,8 @@ app.post("/payment", async (req, res) => {
           },
           quantity: tickets, 
         }],
-        success_url: `https://www.youtube.com/watch?v=1r-F3FIONl8`,
-        cancel_url: `https://www.youtube.com/watch?v=1r-F3FIONl8`,
+        success_url: `${process.env.SERVER_URL}`,
+        cancel_url: `${process.env.SERVER_URL}/Order`,
         metadata: {
           movieName: movieName,
           Booking_ID: Booking_ID,
