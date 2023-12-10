@@ -8,7 +8,7 @@ import {
 } from '@tanstack/react-query'
 import MovieFilter from '../movieFilter/MovieFilter';
 import { makeRequest } from '../../utils/axios';
-import Carousel from '../carousel/Carousel';
+import Loader from '../Loader/Loader';
 
 const Movies = () => {
   const [movies, setMovies] = useState([])
@@ -21,13 +21,13 @@ const Movies = () => {
   });
   
   return (
-    <div className="movies">
+    isLoading?<Loader/>:<div className="movies">
         <h2>Movies</h2>
         <MovieFilter/>
         {/* <Carousel/> */}
         <div className="movies-grid">
           {
-            isLoading?"Loading...":movies.map(movie=>{
+            movies.map(movie=>{
               return (
                  <Movie key={movie.Movie_ID} movie={movie}/>
               )

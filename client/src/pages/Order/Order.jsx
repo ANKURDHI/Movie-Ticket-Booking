@@ -1,42 +1,70 @@
-import React from 'react'
+import React, { useState } from 'react'
+import {
+  useQuery,
+  useMutation,
+  useQueryClient
+} from '@tanstack/react-query'
+import { makeRequest } from '../../utils/axios';
 import './order.scss'
+import { useParams } from 'react-router-dom';
+import Loader from '../../components/Loader/Loader'
 
 const Order = () => {
+  const [seatIds, setSeatIds] = useState([])
+  const {showId,screenId} = useParams()
+  const { isLoading, error, data } = useQuery({    
+    queryKey:['order'],queryFn: async() =>{
+      const res = await makeRequest.get(`/booking/getBooking/${showId}/${screenId}`);
+      const seats = res.data.map(item=>item.Seat_ID);
+      setSeatIds(seats)
+      return res.data;
+    }
+  });
+  console.log(data)
+  const total = data&&data[0].Price*seatIds.length;
+  const taxes = (total*5)/100;
+ 
   return (
     <div className="order">
         <div className="container">
             <div className="timer">
                 <span>Session expires in 3:00</span>
             </div>
-            <div className="details">
+            {
+              isLoading?<Loader/>:error?<h3>Try Again</h3>:(
+                <div className="details">
                 <div className="first">
                     <div className="image">
-                      <img src="https://assetscdn1.paytm.com/images/cinema/Tiger-3--705x750-d0e91180-6f31-11ee-b230-2d48320d83d4-db9ff0f0-7a3d-11ee-8147-ef6e4eb6a4d7.jpg?format=webp&imwidth=300" alt="movie-image" />
+                      <img src={data&&data[0].Mpic} alt="movie-image" />
                     </div>
                     <div className="info">
                        <div className="main">
-                           <h3>Tiger 3</h3>
+                           <h3>{data&&data[0].Name}</h3>
                            <div className="tags">
-                             <span>U/A</span>
-                             <span>Hindi</span>
-                             <span>2D</span>
+                             <span>{data&&data[0].Genre}</span>
+                             <span>{data&&data[0].Language}</span>
+                             <span>{data&&data[0].Target_Audience}</span>
                            </div>
                        </div>
                        <div className="theatre">
-                        <h4>PVR Cinemas</h4>
+                        <h4>{data&&data[0].Name_of_Theatre}</h4>
                         <p>
-                            DLF Mall of India, Sector 18, Noida, Uttar Pradesh 201301, India
+                            {data&&data[0].Area}
                          </p>
                        </div>
                        <div className="timing">
                         <div className="first">
-                            <h3>Fri, 01Dec, 11:00 AM</h3>
-                            <p>SCREEN 5,SOFA E-7</p>
+                            {/* <h3>Fri, 01Dec, 11:00 AM</h3> */}
+                            {
+                              seatIds&&seatIds.map(id=>(
+                                <p key={id}>SCREEN {data&&data[0].Screen_ID},SEAT {id}</p>
+                              ))
+                            }
                         </div>
-                        <div className="second">
+                        {/* <div className="second">
                             <span>1</span>
                             <span>TICKET</span>
-                        </div>
+                        </div> */}
                        </div>
                     </div>
                 </div>
@@ -45,17 +73,19 @@ const Order = () => {
                     <div className="booking-first">
                       <h3>Booking Summary</h3>
                       <div>
-                        <p><span>1 Ticket</span><span>Rs 400</span></p>
-                        <p><span>Taxes & Fees</span><span>Rs 57.82</span></p>
+                        <p><span>{seatIds&&seatIds.length} {seatIds&&seatIds.length>0?'Tickets':'Ticket'}</span><span>Rs {data&&data[0].Price}</span></p>
+                        <p><span>Taxes & Fees</span><span>Rs {data&&taxes}</span></p>
                       </div>
                     </div>
                     <div className="booking-second">
-                       <p><span>Total</span><span>Rs 457.82</span></p>
-                       <button>Proceed to Pay Rs 457.82</button>
+                       <p><span>Total</span><span>Rs {total+taxes}</span></p>
+                       <button>Proceed to Pay Rs {total+taxes}</button>
                     </div>
                 </div>
             
             </div>
+              )
+            }
         </div>
     </div>
   )

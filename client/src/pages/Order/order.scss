@@ -12,8 +12,10 @@
             color: red;
         }
         .details{
+            padding: 20px;
             display: flex;
-            gap: 20px;
+            justify-content: space-between;
+            gap: 40px;
             .first{
                 background-color: white;
                 padding: 30px;
@@ -24,6 +26,8 @@
                 .image {
                   img {
                     border-radius: 10px;
+                    height:330px;
+                    width:250px
                   }
                 }
 
