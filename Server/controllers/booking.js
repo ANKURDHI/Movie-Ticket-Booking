@@ -14,7 +14,7 @@ const getBooking = async (req,res)=>{
     const Show_ID = req.body.Show_ID;
   
     try{        
-        let q='SELECT Seats.*,Theatre.*, Screen.*,  Movie.* FROM Seats JOIN Screen ON Seats.Screen_ID = Screen.Screen_ID JOIN Theatre ON Screen.Theatre_ID = Theatre.Theatre_ID JOIN show1 ON Screen.Screen_ID = show1.Screen_ID JOIN Movie ON show1.Movie_ID = Movie.Movie_ID WHERE Seats.User_ID = ? AND Seats.status = "Booked" AND Seats.Screen_ID = ? AND show1.Show_ID = ?;'
+        let q='SELECT Seats.*,Theatre.*,show1.Show_Time,show1.Show_Date, Screen.*,  Movie.* FROM Seats JOIN Screen ON Seats.Screen_ID = Screen.Screen_ID JOIN Theatre ON Screen.Theatre_ID = Theatre.Theatre_ID JOIN show1 ON Screen.Screen_ID = show1.Screen_ID JOIN Movie ON show1.Movie_ID = Movie.Movie_ID WHERE Seats.User_ID = ? AND Seats.status = "Booked" AND Seats.Screen_ID = ? AND show1.Show_ID = ?;'
         const [response] = await pool.query(q,[User_ID,Screen_ID,Show_ID])
         res.status(200).json(response)
     }

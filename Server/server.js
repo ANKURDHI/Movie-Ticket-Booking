@@ -5,6 +5,64 @@ const cors = require('cors')
 const cookieParser=require('cookie-parser')
 const multer = require('multer')
 const path = require('path')
+const fetch = require('node-fetch');
+
+//webhook
+app.post('/webhook', express.raw({type: '*/*'}), async(request, response) => {
+  const sig = request.headers['stripe-signature'];
+  // console.log(sig);
+
+  let event;
+
+  try {
+    event = stripe.webhooks.constructEvent(request.body, sig,process.env.STRIPE_WEBHOOK_KEY);
+  } catch (err) {
+    console.log(err)
+    return response.status(400).send(`Webhook Error: ${err.message}`);
+  }
+
+  // Handle the event
+  switch (event.type) {
+    case 'checkout.session.completed':
+      const session = event.data.object;
+      try {
+        const bookingData = {
+          Booking_ID: session.metadata.Booking_ID,
+          No_of_Tickets: session.metadata.No_of_Tickets,
+          Total_Cost: session.metadata.Total_Cost,
+          Card_Number: session.metadata.Card_Number,
+          Name_on_card: session.metadata.Name_on_card,
+          User_ID: session.metadata.User_ID,
+          Show_ID: session.metadata.Show_ID,
+          Seat_ID: session.metadata.Seat_ID,
+        };
+
+        const apiResponse = await fetch('http://localhost:8081/api/booking/addBooking', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(bookingData),
+        });
+
+        const data = await apiResponse.json();
+
+        console.log(data);
+      } catch (err) {
+        console.log(`API call failed: ${err.message}`);
+      }
+  
+      // Handle successful checkout
+      break;
+    // ... handle other event types
+    default:
+      console.log(`Unhandled event type ${event.type}`);
+  }
+
+  // Return a response to acknowledge receipt of the event
+  response.json({received: true});
+}); 
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'))
@@ -58,8 +116,50 @@ app.use("/api/booking",bookingRoute)
 app.use("/api/ticket",ticketRoute)
 app.use("/api/seats",seatRoute)
 
+//Stripe
+const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY)
 
 
+
+app.post("/payment", async (req, res) => {
+    try {
+      const { movieName, price, tickets,Booking_ID,User_ID,Show_ID,Seat_ID } = req.body; 
+  
+      const session = await stripe.checkout.sessions.create({
+        payment_method_types: ["card"],
+        mode: "payment",
+        line_items: [{
+          price_data: {
+            currency: "inr", 
+            product_data: {
+              name: movieName, 
+            },
+            unit_amount: price * 100, 
+          },
+          quantity: tickets, 
+        }],
+        success_url: `https://www.youtube.com/watch?v=1r-F3FIONl8`,
+        cancel_url: `https://www.youtube.com/watch?v=1r-F3FIONl8`,
+        metadata: {
+          movieName: movieName,
+          Booking_ID: Booking_ID,
+          No_of_Tickets: tickets,
+          Total_Cost: price,
+          Card_Number: 0,
+          Name_on_card: "None",
+          User_ID: User_ID,
+          Show_ID: Show_ID,
+          Seat_ID: Seat_ID,
+          // Add any other data you want to include
+        },
+      })
+      res.json({ url: session.url })
+    } catch (e) {
+      res.status(500).json({ error: e.message })
+    }
+  })
+  
+ 
 app.listen(8081,()=>{
 console.log("listening");
 })
