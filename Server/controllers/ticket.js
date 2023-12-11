@@ -23,11 +23,11 @@ const getTicket = async (req,res)=>{
 //for adding a new Ticket
 const addTicket = async (req, res) => {
     try {
-        const { Ticket_ID, Booking_ID, Price } = req.body;
-        const sql = "INSERT INTO Ticket (Ticket_ID, Booking_ID, Price) VALUES (?,?,?);"
+        const {  Booking_ID, Price } = req.body;
+        const sql = "INSERT INTO Ticket ( Booking_ID, Price) VALUES (?,?);"
         
         // Await the query directly
-        const result = await pool.query(sql, [Ticket_ID, Booking_ID, Price]);
+        const result = await pool.query(sql, [ Booking_ID, Price]);
 
         res.status(201).json("Ticket added");
     } catch (err) {
