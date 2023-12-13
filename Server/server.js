@@ -106,7 +106,8 @@ const screenRoute=require('./Routes/screen')
 const showRoute=require('./routes/show')
 const bookingRoute=require('./routes/booking')
 const ticketRoute=require('./routes/ticket')
-const seatRoute=require('./routes/seat')
+const seatRoute=require('./routes/seat');
+const verifyToken = require('./middleware/verifyToken');
 
 app.use("/api/auth",authRoute)
 app.use("/api/users",userRoute)
@@ -123,9 +124,10 @@ const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY)
 
 
 
-app.post("/payment", async (req, res) => {
+app.post("/payment", verifyToken,async (req, res) => {
+  const {id} = req.userData
     try {
-      const { movieName, price, tickets,User_ID,Show_ID,Seat_IDs } = req.body; 
+      const { movieName, price, tickets,Screen_ID,Show_ID,Seat_IDs } = req.body; 
   
       const session = await stripe.checkout.sessions.create({
         payment_method_types: ["card"],
@@ -141,14 +143,14 @@ app.post("/payment", async (req, res) => {
           quantity: tickets, 
         }],
         success_url: `${process.env.CLIENT_PORT}`,
-        cancel_url: `${process.env.CLIENT_PORT}/Order`,
+        cancel_url: `${process.env.CLIENT_PORT}/Order/${Show_ID}/${Screen_ID}`,
         metadata: {
           movieName: movieName,
           No_of_Tickets: tickets,
           Total_Cost: price,
           Card_Number: 0,
           Name_on_card: "None",
-          User_ID: User_ID,
+          User_ID: id,
           Show_ID: Show_ID,
           Seat_IDs: JSON.stringify(Seat_IDs),
           // Add any other data you want to include

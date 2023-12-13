@@ -29,23 +29,17 @@ const Order = () => {
    try {
      const response = await makeRequest.post(`/payment`,{ 
       movieName:data[0].Name,
-      price:data[0].Name,
-      tickets:seatIds,
-      Booking_ID,
-      User_ID,
+      price:data[0].Price,
+      tickets:seatIds.length,
+      Screen_ID:screenId,
       Show_ID:showId,
-      Seat_ID 
+      Seat_IDs:seatIds 
     });
-   setLogin({
-     email:'',
-     password:''
-   });
-   loginUser(response.data) 
    if(response.data){
-     navigate('/',{replace:true})
+     navigate(`${response.data.url}`,{replace:true})
    }     
    } catch (err) {
-     setErr(err.response.data)
+     console.log(err.response.data)
    }
 }
 
@@ -104,7 +98,7 @@ const Order = () => {
                     </div>
                     <div className="booking-second">
                        <p><span>Total</span><span>Rs {total+taxes}</span></p>
-                       <button>Proceed to Pay Rs {total+taxes}</button>
+                       <button onClick={handleSubmit}>Proceed to Pay Rs {total+taxes}</button>
                     </div>
                 </div>
             
