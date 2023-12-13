@@ -12,6 +12,10 @@ import Loader from '../Loader/Loader';
 
 const Movies = () => {
   const [movies, setMovies] = useState([])
+  const [filterInfo, setFilterInfo] = useState({
+    Language: "",
+    Genre: "",
+  });
   const { isLoading, error, data } = useQuery({    
     queryKey:['movies'],queryFn: async() =>{
       const res = await makeRequest.get(`/movies/allMovies`);
@@ -23,7 +27,7 @@ const Movies = () => {
   return (
     isLoading?<Loader/>:<div className="movies">
         <h2>Movies</h2>
-        <MovieFilter/>
+        <MovieFilter data={data} setMovies={setMovies}/>
         {/* <Carousel/> */}
         <div className="movies-grid">
           {

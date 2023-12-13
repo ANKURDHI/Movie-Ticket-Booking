@@ -24,6 +24,31 @@ const Order = () => {
   const total = data&&data[0].Price*seatIds.length;
   const taxes = (total*5)/100;
  
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+   try {
+     const response = await makeRequest.post(`/payment`,{ 
+      movieName:data[0].Name,
+      price:data[0].Name,
+      tickets:seatIds,
+      Booking_ID,
+      User_ID,
+      Show_ID:showId,
+      Seat_ID 
+    });
+   setLogin({
+     email:'',
+     password:''
+   });
+   loginUser(response.data) 
+   if(response.data){
+     navigate('/',{replace:true})
+   }     
+   } catch (err) {
+     setErr(err.response.data)
+   }
+}
+
   return (
     <div className="order">
         <div className="container">

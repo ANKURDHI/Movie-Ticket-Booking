@@ -6,49 +6,72 @@
         // padding: 10px;
         display: flex;
         align-items: center;
+        justify-content: space-between;
         gap: 10px;
         // margin: 10px 0px 10px 0px;
-    
+      .movie-filter-first {
+        display: flex;
+        align-items: center;
+        gap: 8px;
         .start {
-            padding: 0px 10px;
-            border-right: 1px solid gray;
+          padding: 0px 10px;
+          border-right: 1px solid gray;
+      }
+  
+      .choices{
+          display: flex;
+          gap: 10px;
+          align-items: center;
+          .select-container {
+              // margin: 20px;
+              display: flex;
+              // flex-direction: column;
+              align-items: center;
+              gap: 5px;
+  
+              .custom-select {
+                  background-color: white;
+                  padding: 10px;
+                  font-size: 0.9rem;
+                  border: 1px solid rgb(185, 187, 190);
+                  border-radius: 4px;
+                  min-width: 100px;
+                  outline: none;
+                  cursor: pointer;
+                  transition: border-color 0.3s ease;
+  
+                  /* Hover styles */
+                  &:hover {
+                    border-color: #2980b9;
+                  }
+                
+                  /* Focus styles */
+                  &:focus {
+                    border-color: #2980b9;
+                    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+                  }
+                }    
+            }
+            
+             
+      } 
+      }   
+      .buttons{
+        display: flex;
+        gap: 5px;
+        align-items: center;
+        button {
+          font-size: 1rem;
+          border-radius: 3px;
+          cursor: pointer;
+          padding: 10px;
+          background-color: rgba(7, 19, 242, 0.5);
+          transition: all 0.3s ease-in;
+          color: white;
+          &:hover {
+            background-color: rgba(52, 61, 238, 0.5);
+          }
         }
-    
-        .choices{
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            .select-container {
-                // margin: 20px;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-    
-                .custom-select {
-                    background-color: white;
-                    padding: 10px;
-                    font-size: 0.9rem;
-                    border: 1px solid rgb(185, 187, 190);
-                    border-radius: 4px;
-                    min-width: 100px;
-                    outline: none;
-                    cursor: pointer;
-                    transition: border-color 0.3s ease;
-    
-                    /* Hover styles */
-                    &:hover {
-                      border-color: #2980b9;
-                    }
-                  
-                    /* Focus styles */
-                    &:focus {
-                      border-color: #2980b9;
-                      box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
-                    }
-                  }    
-              }
-              
-               
-        }    
+      }
     }    
 }
