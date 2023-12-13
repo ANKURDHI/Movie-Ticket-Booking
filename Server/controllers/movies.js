@@ -35,11 +35,12 @@ const getLanguage = async (req,res)=>{
 }
 //getSort
 const getSort = async (req,res)=>{
-    const sort = req.body.sort;
+    const Language = req.body.Language;
+    const Genre  =req.body.Genre;
   
     try{        
-        let q='SELECT * FROM Movie WHERE Name LIKE ? ; '
-        const [response] = await pool.query(q,[sort])
+        let q='select * from Movie where Language=? or Genre=?; '
+        const [response] = await pool.query(q,[Language,Genre])
         res.status(200).json(response)
     }
     catch(err){

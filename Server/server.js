@@ -27,15 +27,16 @@ app.post('/webhook', express.raw({type: '*/*'}), async(request, response) => {
       const session = event.data.object;
       try {
         const bookingData = {
-          Booking_ID: session.metadata.Booking_ID,
+          
           No_of_Tickets: session.metadata.No_of_Tickets,
           Total_Cost: session.metadata.Total_Cost,
           Card_Number: session.metadata.Card_Number,
           Name_on_card: session.metadata.Name_on_card,
           User_ID: session.metadata.User_ID,
           Show_ID: session.metadata.Show_ID,
-          Seat_ID: session.metadata.Seat_ID,
+          Seat_IDs: JSON.parse(session.metadata.Seat_IDs),
         };
+        
 
         const apiResponse = await fetch('http://localhost:8081/api/booking/addBooking', {
           method: 'POST',
@@ -51,6 +52,7 @@ app.post('/webhook', express.raw({type: '*/*'}), async(request, response) => {
       } catch (err) {
         console.log(`API call failed: ${err.message}`);
       }
+      
   
       // Handle successful checkout
       break;
@@ -123,7 +125,7 @@ const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY)
 
 app.post("/payment", async (req, res) => {
     try {
-      const { movieName, price, tickets,Booking_ID,User_ID,Show_ID,Seat_ID } = req.body; 
+      const { movieName, price, tickets,User_ID,Show_ID,Seat_IDs } = req.body; 
   
       const session = await stripe.checkout.sessions.create({
         payment_method_types: ["card"],
@@ -138,18 +140,17 @@ app.post("/payment", async (req, res) => {
           },
           quantity: tickets, 
         }],
-        success_url: `https://www.youtube.com/watch?v=1r-F3FIONl8`,
-        cancel_url: `https://www.youtube.com/watch?v=1r-F3FIONl8`,
+        success_url: `${process.env.CLIENT_PORT}`,
+        cancel_url: `${process.env.CLIENT_PORT}/Order`,
         metadata: {
           movieName: movieName,
-          Booking_ID: Booking_ID,
           No_of_Tickets: tickets,
           Total_Cost: price,
           Card_Number: 0,
           Name_on_card: "None",
           User_ID: User_ID,
           Show_ID: Show_ID,
-          Seat_ID: Seat_ID,
+          Seat_IDs: JSON.stringify(Seat_IDs),
           // Add any other data you want to include
         },
       })
