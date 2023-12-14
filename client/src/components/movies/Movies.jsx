@@ -12,10 +12,9 @@ import Loader from '../Loader/Loader';
 
 const Movies = () => {
   const [movies, setMovies] = useState([])
-  const [filterInfo, setFilterInfo] = useState({
-    Language: "",
-    Genre: "",
-  });
+  const [movieError, setMovieError] = useState("")
+  let languages;
+  let genres;
   const { isLoading, error, data } = useQuery({    
     queryKey:['movies'],queryFn: async() =>{
       const res = await makeRequest.get(`/movies/allMovies`);
@@ -23,23 +22,43 @@ const Movies = () => {
       return res.data;
     }
   });
-  
+
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({  
+    mutationFn:(clicked) => {
+      return;
+   }, 
+     onSuccess: () => {
+       queryClient.invalidateQueries("movies")
+     },
+  })
+
+  if(data){
+    languages = Array.from(new Set(data.map(item=>item.Language)));
+    genres = Array.from(new Set(data.map(item=>item.Genre)));
+  }
+
   return (
-    isLoading?<Loader/>:<div className="movies">
+    isLoading?<Loader/>:(<div className="movies">
         <h2>Movies</h2>
-        <MovieFilter data={data} setMovies={setMovies}/>
+        <MovieFilter genres={genres} languages={languages} setMovies={setMovies} mutation={mutation} setMovieError={setMovieError}/>
         {/* <Carousel/> */}
-        <div className="movies-grid">
-          {
-            movies.map(movie=>{
-              return (
-                 <Movie key={movie.Movie_ID} movie={movie}/>
-              )
-            })
-          }
-        </div>
+        {
+          movieError?movieError:(
+            <div className="movies-grid">
+              {
+                movies.map(movie=>{
+                  return (
+                    <Movie key={movie.Movie_ID} movie={movie}/>
+                  )
+                })
+              }
+            </div>
+          )
+        }
     </div>
-  )
+  ))
 }
 
 export default Movies

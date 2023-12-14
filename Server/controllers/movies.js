@@ -8,45 +8,59 @@ const allMovies =  async(req,res)=>{
 }
 
 //getGenre
-const getGenre = async (req,res)=>{
-    const Genre = req.body.Genre;
-  
+const getFilteredMovies = async (req,res)=>{    
+    const {Genre,Language} = req.body;  
     try{        
-        let q='SELECT * FROM Movie WHERE Genre = ?;'
-        const [response] = await pool.query(q,[Genre])
-        res.status(200).json(response)
+        let q;
+        let data;
+        if(Genre && Language){
+            q='SELECT * FROM Movie WHERE Genre = ? AND Language = ?;'
+            const [response] = await pool.query(q,[Genre,Language]);
+            data=response;
+        }else if(Genre){
+            q='SELECT * FROM Movie WHERE Genre = ?;';
+            const [response] = await pool.query(q,[Genre])
+            data=response;
+        }else {
+           q='SELECT * FROM Movie WHERE Language = ?;';
+           const [response] = await pool.query(q,[Language])
+           data=response;
+        }        
+        // const [response] = await pool.query(q,[Genre])
+        // console.log(data)
+        res.status(200).json(data)
     }
     catch(err){
         res.status(500).json(err)
     }
 }
 //getLanguage
-const getLanguage = async (req,res)=>{
-    const Language = req.body.Language;
+// const getLanguage = async (req,res)=>{
+//     const Language = req.body.Language;
   
-    try{        
-        let q='SELECT * FROM Movie WHERE Language = ?;'
-        const [response] = await pool.query(q,[Language])
-        res.status(200).json(response)
-    }
-    catch(err){
-        res.status(500).json(err)
-    }
-}
-//getSort
-const getSort = async (req,res)=>{
-    const Language = req.body.Language;
-    const Genre  =req.body.Genre;
+//     try{        
+//         let q='SELECT * FROM Movie WHERE Language = ?;'
+//         const [response] = await pool.query(q,[Language])
+//         res.status(200).json(response)
+//     }
+//     catch(err){
+//         res.status(500).json(err)
+//     }
+// }
+// //getSort
+// const getSort = async (req,res)=>{
+//     const Language = req.body.Language;
+//     const Genre  =req.body.Genre;
   
-    try{        
-        let q='select * from Movie where Language=? or Genre=?; '
-        const [response] = await pool.query(q,[Language,Genre])
-        res.status(200).json(response)
-    }
-    catch(err){
-        res.status(500).json(err)
-    }
-}
+//     try{        
+//         let q='select * from Movie where Language=? or Genre=?; '
+//         const [response] = await pool.query(q,[Language,Genre])
+//         res.status(200).json(response)
+//     }
+//     catch(err){
+//         res.status(500).json(err)
+//     }
+// }
 
 //get movie
 const getMovie = async (req,res)=>{
@@ -99,7 +113,8 @@ module.exports = {
     addMovie,
     deleteMovie,
     getMovie,
-    getGenre,
-    getLanguage,
-    getSort
+    getFilteredMovies
+    // getGenre,
+    // getLanguage,
+    // getSort
 }
