@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { BsFilter } from 'react-icons/bs';
-
+import {
+  useQuery,
+  useMutation,
+  useQueryClient
+} from '@tanstack/react-query'
 import './moviefilter.scss';
+import { makeRequest } from '../../utils/axios';
 
-const MovieFilter = ({data,setMovies}) => {
+const MovieFilter = ({genres,languages,setMovies,setMovieError,mutation}) => {
   const [filterInfo, setFilterInfo] = useState({
     Language: "",
     Genre: "",
@@ -15,44 +20,53 @@ const MovieFilter = ({data,setMovies}) => {
       [category]: value,
     }));
   };
+  // const queryClient = useQueryClient();
+  // const mutation = useMutation({  
+  //   mutationFn:(clicked) => {
+  //     return;
+  //  }, 
+  //    onSuccess: () => {
+  //      queryClient.invalidateQueries("movies")
+  //    },
+  // })
 
+  const handleReset = () => {
+    setFilterInfo(
+      {
+        Language: "",
+        Genre: "",
+      }
+    )
+    setMovieError("")
+    mutation.mutate(true);
+  }
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+    try {
+      const response = await makeRequest.post(`/movies/filter`,filterInfo);
+      if(response.data.length>0){
+        setMovies(response.data)
+      }else {
+        setMovieError("No Such Movies.")
+      }    
+    } catch (err) {
+      console.log(err)
+    }
+}
 //   const handleSubmit = async(e) => {
 //     e.preventDefault();
 //    try {
-//      const response = await makeRequest.post(`/movies/getGenre`,login);
-//    setLogin({
-//      email:'',
-//      password:''
-//    });
-//    loginUser(response.data) 
-//    if(response.data){
-//      navigate('/',{replace:true})
-//    }     
+//     useQuery({    
+//       queryKey:['filteredMovies'],queryFn: async() =>{
+//         const res = await makeRequest.post(`/movies/filter`,filterInfo);
+//         setMovies(res.data)
+//         return;
+//       }
+//     });   
 //    } catch (err) {
-//      setErr(err.response.data)
+//      console.log(err)
 //    }
 // }
-  // const filterMovies = () => {
-  //   return data.filter((movie) => {
-  //     // Check if the movie satisfies the filter conditions
-  //     const languageCondition =
-  //       (!filterInfo.Language || filterInfo.Language==='All')  || movie.language === filterInfo.Language;
-  //     const genreCondition = (!filterInfo.Genre || filterInfo.Genre==='All') || movie.genre === filterInfo.Genre;
-  //     const audienceCondition =
-  //       (!filterInfo.Audience  || filterInfo.Audience==='All') || movie.audience === filterInfo.Audience;
-  
-  //     // Return true if all conditions are satisfied
-  //     return languageCondition && genreCondition && audienceCondition;
-  //   });
-  // };
-
-  // useEffect(() => {
-  //   const filteredMovies = filterMovies();
-  //   // Update the state with filtered movies
-  //   // Depending on your application logic, you might want to set the filtered movies in a separate state
-  //   // or use it directly where you need it
-  //   setMovies(filteredMovies);
-  // }, [filterInfo]);
 
   return (
     <div className="filter">
@@ -70,9 +84,19 @@ const MovieFilter = ({data,setMovies}) => {
               value={filterInfo.Language}
               onChange={(e) => handleSelectChange('Language', e.target.value)}
             >
-              <option value="Select">Select</option>
-              <option value="Option2">French</option>
-              <option value="Option3">Option 3</option>
+              <option value=""></option>
+              {
+                languages.map(language=>(
+                  <option value={language}>{language}</option>
+                ))
+              }
+              {/* <option value="French">French</option>
+              <option value="English">English</option>
+              <option value="Spanish">Spanish</option>
+              <option value="German">German</option>
+              <option value="Japanese">Japanese</option>
+              <option value="Italian">Italian</option>
+              <option value="Chinese">Chinese</option> */}
             </select>
           </div>
           <div className="select-container">
@@ -83,30 +107,27 @@ const MovieFilter = ({data,setMovies}) => {
               value={filterInfo.Genre}
               onChange={(e) => handleSelectChange('Genre', e.target.value)}
             >
-              <option value="Select">Select</option>
-              <option value="Option2">Option 2</option>
-              <option value="Option3">Option 3</option>
+              <option value=""></option>
+              {
+                genres.map(genre=>(
+                  <option value={genre}>{genre}</option>
+                ))
+              }
+              {/* <option value="Horror">Horror</option>
+              <option value="Romance">Romance</option>
+              <option value="Sci-Fi">Sci-Fi</option>
+              <option value="Action">Action</option>
+              <option value="Drama">Drama</option>
+              <option value="Comedy">Comedy</option>
+              <option value="Thriller">Thriller</option>     */}
             </select>
           </div>
-          {/* <div className="select-container">
-            <label htmlFor="audienceSelect">Audience:</label>
-            <select
-              id="audienceSelect"
-              className="custom-select"
-              value={filterInfo.Audience}
-              onChange={(e) => handleSelectChange('Audience', e.target.value)}
-            >
-              <option value="All">1</option>
-              <option value="Option2">Option 2</option>
-              <option value="Option3">Option 3</option>
-            </select>
-          </div> */}
         </div>
         </div>
 
         <div className="buttons">
-          <button>Apply</button>
-          <button>Reset</button>
+          <button onClick={handleSubmit}>Apply</button>
+          <button onClick={handleReset}>Reset</button>
         </div>
       </div>
     </div>
