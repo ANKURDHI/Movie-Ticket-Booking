@@ -71,6 +71,7 @@ app.use(express.static('public'))
 
 
 app.use((req,res,next)=>{
+  
     res.header("Access-Control-Allow-Credentials",true);
     next();
 })
@@ -124,11 +125,11 @@ const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY)
 
 
 
-app.post("/payment", verifyToken,async (req, res) => {
+app.post("/api/payment", verifyToken,async (req, res) => {
   const {id} = req.userData
     try {
       const { movieName, price, tickets,Screen_ID,Show_ID,Seat_IDs } = req.body; 
-  
+      console.log(req.body)
       const session = await stripe.checkout.sessions.create({
         payment_method_types: ["card"],
         mode: "payment",
@@ -156,7 +157,7 @@ app.post("/payment", verifyToken,async (req, res) => {
           // Add any other data you want to include
         },
       })
-      res.json({ url: session.url })
+      res.send({url:session.url});
     } catch (e) {
       res.status(500).json({ error: e.message })
     }

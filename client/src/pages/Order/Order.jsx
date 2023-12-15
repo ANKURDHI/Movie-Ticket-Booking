@@ -6,10 +6,11 @@ import {
 } from '@tanstack/react-query'
 import { makeRequest } from '../../utils/axios';
 import './order.scss'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Loader from '../../components/Loader/Loader'
 
 const Order = () => {
+  const navigate = useNavigate()
   const [seatIds, setSeatIds] = useState([])
   const {showId,screenId} = useParams()
   const { isLoading, error, data } = useQuery({    
@@ -21,7 +22,7 @@ const Order = () => {
     }
   });
   console.log(data)
-  const total = data&&data[0].Price*seatIds.length;
+  const total = data&&data[0].price*seatIds.length;
   const taxes = (total*5)/100;
  
   const handleSubmit = async(e) => {
@@ -29,17 +30,19 @@ const Order = () => {
    try {
      const response = await makeRequest.post(`/payment`,{ 
       movieName:data[0].Name,
-      price:data[0].Price,
+      price:data[0].price,
       tickets:seatIds.length,
       Screen_ID:screenId,
       Show_ID:showId,
       Seat_IDs:seatIds 
     });
+    
    if(response.data){
-     navigate(`${response.data.url}`,{replace:true})
+    window.location = response.data.url
+    //  navigate(`${response.data.url}`,{replace:true})
    }     
    } catch (err) {
-     console.log(err.response.data)
+     console.log(err)
    }
 }
 {data&&console.log(data[0].Show_Date)}
@@ -93,7 +96,7 @@ const Order = () => {
                     <div className="booking-first">
                       <h3>Booking Summary</h3>
                       <div>
-                        <p><span>{seatIds&&seatIds.length} {seatIds&&seatIds.length>0?'Tickets':'Ticket'}</span><span>Rs {data&&data[0].Price}</span></p>
+                        <p><span>{seatIds&&seatIds.length} {seatIds&&seatIds.length>0?'Tickets':'Ticket'}</span><span>Rs {data&&data[0].price}</span></p>
                         <p><span>Taxes & Fees</span><span>Rs {data&&taxes}</span></p>
                       </div>
                     </div>
