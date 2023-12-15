@@ -41,22 +41,24 @@ const Movies = () => {
 
   return (
     isLoading?<Loader/>:(<div className="movies">
-        <h2>Movies</h2>
-        <MovieFilter genres={genres} languages={languages} setMovies={setMovies} mutation={mutation} setMovieError={setMovieError}/>
-        {/* <Carousel/> */}
-        {
-          movieError?movieError:(
-            <div className="movies-grid">
-              {
-                movies.map(movie=>{
-                  return (
-                    <Movie key={movie.Movie_ID} movie={movie}/>
-                  )
-                })
-              }
-            </div>
-          )
-        }
+        {/* <div className="container"> */}
+          <h2>Movies</h2>
+          <MovieFilter genres={genres} languages={languages} setMovies={setMovies} mutation={mutation} setMovieError={setMovieError}/>
+          {/* <Carousel/> */}
+          {
+            movieError?movieError:(
+              <div className="movies-grid">
+                {
+                  movies.map(movie=>{
+                    return (
+                      <Movie key={movie.Movie_ID} movie={movie}/>
+                    )
+                  })
+                }
+              </div>
+            )
+          }
+        {/* </div> */}
     </div>
   ))
 }
