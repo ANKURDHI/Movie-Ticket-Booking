@@ -10,6 +10,7 @@ const allMovies =  async(req,res)=>{
 //getGenre
 const getFilteredMovies = async (req,res)=>{    
     const {Genre,Language} = req.body;  
+    console.log({Genre,Language})
     try{        
         let q;
         let data;
@@ -21,13 +22,15 @@ const getFilteredMovies = async (req,res)=>{
             q='SELECT * FROM Movie WHERE Genre = ?;';
             const [response] = await pool.query(q,[Genre])
             data=response;
-        }else {
+        }else if(Language) {
            q='SELECT * FROM Movie WHERE Language = ?;';
            const [response] = await pool.query(q,[Language])
            data=response;
-        }        
-        // const [response] = await pool.query(q,[Genre])
-        // console.log(data)
+        }else {
+            q='SELECT * FROM Movie';
+            const [response] = await pool.query(q)
+            data=response;
+        }
         res.status(200).json(data)
     }
     catch(err){

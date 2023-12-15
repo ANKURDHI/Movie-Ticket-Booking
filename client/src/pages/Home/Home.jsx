@@ -24,9 +24,9 @@ function Home() {
   // }, [user, navigate]);
   return (
     <div className="home">
-      <div className="container">
+      {/* <div className="container"> */}
       <Movies/>
-      </div>
+      {/* </div> */}
     </div>
   )
 }
