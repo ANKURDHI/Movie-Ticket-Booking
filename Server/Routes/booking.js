@@ -6,6 +6,7 @@ const {
     addBooking,
     deleteBooking,
     getBooking,
+    getBookings
     
     
 } = require('../controllers/booking');
@@ -13,6 +14,8 @@ const {
 
 router.get("/allBooking",allBooking)
 router.get("/getBooking/:showId/:screenId",verifyToken,getBooking)
+
+router.get("/getBookings",verifyToken,getBookings)
 router.post("/addBooking",addBooking)
 router.delete("/deleteBooking",deleteBooking)
 
