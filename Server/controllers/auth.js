@@ -21,8 +21,9 @@ const token = (req,res)=>{
 const register = async(req,res)=>{
     try {            
         const {first_name,last_name,email,password}=req.body;   
-        let q = 'SELECT first_name FROM USERS WHERE email=?';
+        let q = 'SELECT First_Name FROM web_user WHERE Email_ID=?';
         const [exists] = await pool.query(q,[email]);
+        console.log(exists);
         if(exists.length!=0) return res.send("User exists");
         const salt=await bcrypt.genSalt(10)
         const hashedPassword=await bcrypt.hash(password,salt)

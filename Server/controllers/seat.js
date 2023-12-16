@@ -14,10 +14,13 @@ const getSeat = async (req,res)=>{
 }
 //get all seats
 const getSeats = async (req,res)=>{
+
     const {screenId,showId} = req.params
     try{        
-        let q='SELECT * FROM Seats WHERE Screen_ID=? AND Show_ID=?;'
+        // let q='SELECT * FROM Seats WHERE Screen_ID=? AND Show_ID=?;'
+        let q='SELECT Seats.* FROM Seats JOIN Show1 ON Seats.Screen_ID = Show1.Screen_ID WHERE Seats.Screen_ID = ? AND Show1.Show_ID = ?; '
         const [response] = await pool.query(q,[screenId,showId]);
+        console.log(response);
         res.status(200).json(response)
     }
     catch(err){
@@ -33,13 +36,14 @@ const updateSeat = async (req,res)=>{
     try{
         const placeholders = Array(seatIds.length).fill('?').join(', ');
 
-        const q = `UPDATE Seats SET User_ID=?, status='Booked' WHERE Seat_ID IN (${placeholders}) AND Show_ID=? AND Screen_ID=?;`;
+        const q = `UPDATE Seats JOIN Show1 ON Seats.Screen_ID = Show1.Screen_ID SET Seats.User_ID = ?, Seats.status = 'Booked' WHERE Seats.Seat_ID IN (${placeholders}) AND Show1.Show_ID = ? AND Seats.Screen_ID = ?; `;
         const values = [
         id,
         ...seatIds, // Spread the seatIds array to provide individual values
         showId,
         screenId
         ];
+        console.log(q)
         await pool.query(q, values);      
         res.status(200).json("Seat has been edited");
     }

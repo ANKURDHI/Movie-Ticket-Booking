@@ -9,11 +9,12 @@ const allTheatre =  async(req,res)=>{
 }
 //get Theatre
 const getTheatre = async (req,res)=>{
-    console.log('here')
+   
     const {movieId,date} = req.params;  
     try{        
         let q="SELECT t.*, sh.* FROM Theatre t  JOIN Screen s ON t.Theatre_ID = s.Theatre_ID  JOIN show1 sh ON s.Screen_ID = sh.Screen_ID  JOIN Movie m ON sh.Movie_ID = m.Movie_ID  WHERE m.Movie_ID = ? AND sh.Show_Date = ?;"
         const [response] = await pool.query(q,[movieId,date])
+        
         res.status(200).json(response)
     }
     catch(err){
