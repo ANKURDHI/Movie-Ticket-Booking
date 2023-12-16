@@ -1,7 +1,19 @@
 import React from 'react'
 import './booking.scss'
+// import {
+//   useQuery,
+//   useMutation,
+//   useQueryClient
+// } from '@tanstack/react-query'
+// import { makeRequest } from '../../utils/axios';
 
 const Booking = () => {
+  // const { isLoading, error, data } = useQuery({    
+  //   queryKey:['order'],queryFn: async() =>{
+  //     const res = await makeRequest.get(`/booking/getBooking/${showId}/${screenId}`);
+  //     return res.data;
+  //   }
+  // });
   return (
     <div className="bookings">
      <div className="container">

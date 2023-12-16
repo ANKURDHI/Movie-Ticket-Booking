@@ -57,13 +57,15 @@ const router = createBrowserRouter([
       },
       {
         path:'/bookings',
-        element:<Booking/>
+        element:<ProtectedRoute>
+        <Booking/>
+      </ProtectedRoute>
       },
       {
         path:'/seats/:showId/:screenId',
         element:<ProtectedRoute>
-          <SeatsBook/>
-        </ProtectedRoute>
+        <SeatsBook/>
+      </ProtectedRoute>
       },
       {
         path:'/order/:showId/:screenId',
