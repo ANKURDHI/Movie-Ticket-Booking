@@ -1,0 +1,20 @@
+.bookings {
+    width: 100%;
+    min-height: 100vh;
+    .container {
+        margin-top: 70px;
+        padding: 10px;
+        color: black;
+
+        .booking {
+            margin-top: 10px;
+            display: flex;
+            gap: 20px;
+            img{
+                border-radius: 10px;
+                width: 200px;
+                height: 200px;
+            }
+        }
+    }
+}

@@ -46,7 +46,7 @@ const Movies = () => {
           <MovieFilter genres={genres} languages={languages} setMovies={setMovies} mutation={mutation} setMovieError={setMovieError}/>
           {/* <Carousel/> */}
           {
-            movieError?movieError:(
+            movieError?<div style={{fontStyle:'bold',display:'flex',alignItems:'center',justifyContent:'center'}}>{movieError}</div>:(
               <div className="movies-grid">
                 {
                   movies.map(movie=>{

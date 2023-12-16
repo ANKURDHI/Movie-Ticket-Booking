@@ -126,12 +126,18 @@
                 min-width: 60px;
                 cursor: pointer;
                 border: 1px solid lightslategray;
-                border-radius: 8px;
+                border-radius: 5px;
                 padding: 5px;
                 display: flex;
                 text-align: center;
                 flex-direction: column;
                 color: black;
+
+                &.active {
+                  background-color: rgb(22, 133, 243);
+                  border: 2px solid rgb(101, 92, 231);
+                  color: white;
+                }
             }
         }
 

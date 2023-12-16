@@ -3,14 +3,19 @@ import './navbar.scss'
 import {BiCameraMovie} from 'react-icons/bi'
 import { Link, useNavigate } from 'react-router-dom'
 import {useAuth} from '../../context/AuthContext'
+import {makeRequest} from '../../utils/axios'
 
 const Navbar = () => {
   const {user,logoutUser} = useAuth()
   const navigate = useNavigate();
 
-  const handleClick = ()=>{
-     logoutUser();
-    navigate('/',{replace:'true'})
+  const handleClick = async()=>{
+    const response = await makeRequest.post(`/auth/logout`);
+    console.log(response)
+    if(response.status===200){
+      logoutUser();
+      navigate('/',{replace:'true'})
+    } 
   }
 
   return (
@@ -23,15 +28,15 @@ const Navbar = () => {
               <li>Home</li>
               <li>Movies</li>
               <li>Cinema</li>
-              <li>Orders</li>
+              {user&&<Link to={'/bookings'}><li>Orders</li></Link>}
             </ul>
           </nav>
         </div>
 
         {
-          user?<button className='second' onClick={handleClick}>
+          user?<Link to={'/'} className='second' onClick={handleClick}>
           Logout
-        </button>:<Link to={'/login'} className='second'>
+        </Link>:<Link to={'/login'} className='second'>
           Login
         </Link>
         }

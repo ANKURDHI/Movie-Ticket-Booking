@@ -66,8 +66,8 @@ const Seats = ({screenId,showId}) => {
           bookedSeats.length>0&&<div className="prices">
           <div className="content">
               <div className="first">
-                  <div>Rs {bookedSeats.length*700}</div>
-                  <div>Ticket {bookedSeats.length} x Rs700</div>
+                  <div>Rs {bookedSeats.length*200}</div>
+                  <div>Ticket {bookedSeats.length} x Rs200</div>
               </div>
               <button onClick={handleSubmit}>BOOK TICKET</button>
           </div>

@@ -44,13 +44,13 @@ function Register() {
           <h1>Register</h1>
           <form onSubmit={handleSubmit}>
             <label htmlFor="first_name"></label>
-            <input type="text"  name='first_name' placeholder='First Name' onChange={handleChange}/>
+            <input required type="text"  name='first_name' placeholder='First Name' onChange={handleChange}/>
             <label htmlFor="last_name"></label>
-            <input type="text"  name='last_name' placeholder='Last Name' onChange={handleChange}/>
+            <input required type="text"  name='last_name' placeholder='Last Name' onChange={handleChange}/>
             <label htmlFor="email"></label>
-            <input type="email"  name='email' placeholder='Email' onChange={handleChange}/>
+            <input required type="email"  name='email' placeholder='Email' onChange={handleChange}/>
             <label htmlFor="password"></label>
-            <input type="password"  name='password' placeholder='Password' onChange={handleChange}/>
+            <input required type="password"  name='password' placeholder='Password' onChange={handleChange}/>
             {/* {err && <>{err}</>} */}
             <button className='btn btn-primary'>Sign Up</button>
             <p>Already have an account?<Link to={'/login'}>Login</Link></p>

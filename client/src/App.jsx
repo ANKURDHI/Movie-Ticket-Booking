@@ -15,6 +15,7 @@ import MovieDetail from './components/movieDetail/MovieDetail'
 import SeatsBook from './pages/Seats/SeatsBook'
 import Order from './pages/Order/Order'
 import { makeRequest } from './utils/axios'
+import Booking from './pages/Bookings/Booking'
 
 const ProtectedRoute = ({children}) => {
   const navigate = useNavigate();
@@ -53,6 +54,10 @@ const router = createBrowserRouter([
       {
         path:'movie/:movieId',
         element:<MovieDetail/>
+      },
+      {
+        path:'/bookings',
+        element:<Booking/>
       },
       {
         path:'/seats/:showId/:screenId',

@@ -10,7 +10,10 @@ const SeatsBook = () => {
         <div className="container">
             <div className="topbar">
                 <div className="container">
-                <div className="first">
+                    <div className="first">
+                       BOOK YOUR SEATS
+                    </div>
+                {/* <div className="first">
                     <div className="date">
                         <p>Wed</p>
                         <span>15 Nov</span>
@@ -80,7 +83,7 @@ const SeatsBook = () => {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> */}
                 <div className="second">
                    <div className="item">
                         <div></div>

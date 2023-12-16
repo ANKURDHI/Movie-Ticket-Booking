@@ -12,11 +12,23 @@ import Loader from '../Loader/Loader';
 // import { useAuth } from '../../context/AuthContext';
 
 const MovieDetail = () => {
-  const currentDate = new Date().toJSON().slice(0, 10)
+    const [theatres, setTheatres] = useState([])
+    const [activeIndex, setActiveIndex] = useState(0);
 
-    // const [theatres, setTheatres] = useState([])
+  const handleDateClick = (index) => {
+    setActiveIndex(index === activeIndex ? null : index);
+  };
+
+  const dateItems = [
+    { day: 'Sat', date: 'Dec 15' ,value:'2023-12-15'},
+    { day: 'Sun', date: 'Dec 16',value:'2023-12-16' },
+    { day: 'Mon', date: 'Dec 17' ,value:'2023-12-17'},
+    { day: 'Tue', date: 'Dec 18' ,value:'2023-12-18'},
+  ];
      const {movieId} = useParams();
-
+     const currentDate = dateItems[activeIndex].value
+    //  let a = new Date().toJSON().slice(0, 10)
+     console.log(currentDate)
      const { isLoading:movieLoading, error:movieError, data:movieData } = useQuery({    
       queryKey:['movie'],queryFn: async() =>{
         const res = await makeRequest.get(`/movies/getMovie/${movieId}`);
@@ -25,7 +37,7 @@ const MovieDetail = () => {
     });
 
      const { isLoading, error, data } = useQuery({    
-    queryKey:['theatres'],queryFn: async() =>{
+    queryKey:['theatres',currentDate],queryFn: async() =>{
       const res = await makeRequest.get(`/theatre/getTheatre/${movieId}/${currentDate}`);
       return res.data;
     }
@@ -85,25 +97,19 @@ const MovieDetail = () => {
        <div className="booking-filters">
          <div className="container">
          <h3>Show Listings</h3>
-           <div className="dates">
-              <div className="month"><div>NOV</div></div>
-              <div className="day">
-                <p>Tue</p>
-                <span>14</span>
-              </div>
-              <div className="day">
-                <p>Wed</p>
-                <span>15</span>
-              </div>
-              <div className="day">
-                <p>Thu</p>
-                <span>16</span>
-              </div>
-              <div className="day">
-                <p>Fri</p>
-                <span>17</span>
-              </div>
+         
+         <div className="dates">
+          {dateItems.map((item, index) => (
+            <div
+              key={index}
+              className={`day ${index === activeIndex ? 'active' : ''}`}
+              onClick={() => handleDateClick(index)}
+            >
+              <p>{item.day}</p>
+              <span>{item.date}</span>
             </div>
+          ))}
+        </div>
 
             {/* <div className="filters">
               <div className="first">
@@ -144,7 +150,7 @@ const MovieDetail = () => {
             {
               isLoading?<Loader/>:error?<h3>Error</h3>:(
                 <div className='cinema-display'>
-                {groupedData &&
+                {groupedData?
                     groupedData.map(theatre => (
                         <div className="cinema" key={theatre.Theatre_ID}>
                             <div className="first">
@@ -159,7 +165,7 @@ const MovieDetail = () => {
                                     <Link to={`/seats/${screen.Show_ID}/${screen.Screen_ID}`} className="item" key={screen.Screen_ID}>
                                         <div>
                                             <h4>{screen.Show_Time}</h4>
-                                            {/* <span>2D</span> */}
+                                            <span style={{fontSize:'0.8rem',color:'lightslategray'}}>SCREEN {screen.Screen_ID}</span>
                                         </div>
                                         {/* <div>
                                             RECLINER
@@ -168,7 +174,7 @@ const MovieDetail = () => {
                                 ))}
                             </div>
                         </div>
-                    ))}
+                    )):<h2>No Theatres</h2>}
             </div>
               )
             }

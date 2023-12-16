@@ -43,10 +43,10 @@ const handleChange = (e) => {
         <h1>Login</h1>
         <form onSubmit={handleSubmit}>
           <label htmlFor="email"></label>
-          <input type="email" name='email' placeholder='Email' onChange={handleChange}/>
+          <input type="email" name='email' required placeholder='Email' onChange={handleChange}/>
         
           <label htmlFor="password"></label>
-          <input type='password'  name='password' placeholder='Password' onChange={handleChange}/>
+          <input type='password' required  name='password' placeholder='Password' onChange={handleChange}/>
           {/* {err && err} */}
           <button className='btn btn-primary'>Login</button>
         </form>
