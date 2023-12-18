@@ -25,9 +25,9 @@ const Navbar = () => {
           <Link><BiCameraMovie size={30}/></Link>
           <nav>
             <ul>
-              <li>Home</li>
-              <li>Movies</li>
-              <li>Cinema</li>
+            <Link to={'/'}><li>Movies</li></Link>
+              
+              
               {user&&<Link to={'/bookings'}><li>Orders</li></Link>}
             </ul>
           </nav>

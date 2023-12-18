@@ -20,10 +20,10 @@ const MovieDetail = () => {
   };
 
   const dateItems = [
-    { day: 'Sat', date: 'Dec 15' ,value:'2023-12-15'},
-    { day: 'Sun', date: 'Dec 16',value:'2023-12-16' },
-    { day: 'Mon', date: 'Dec 17' ,value:'2023-12-17'},
-    { day: 'Tue', date: 'Dec 18' ,value:'2023-12-18'},
+    { day: 'Sat', date: 'Dec 16' ,value:'2023-12-15'},
+    { day: 'Sun', date: 'Dec 17',value:'2023-12-16' },
+    { day: 'Mon', date: 'Dec 18' ,value:'2023-12-17'},
+    { day: 'Tue', date: 'Dec 19' ,value:'2023-12-18'},
   ];
      const {movieId} = useParams();
      const currentDate = dateItems[activeIndex].value

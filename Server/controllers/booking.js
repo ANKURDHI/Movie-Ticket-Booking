@@ -11,7 +11,7 @@ const allBooking =  async(req,res)=>{
 const getBookings = async (req,res)=>{
     const {id} = req.userData;
     try{        
-        let q='SELECT Seats.*,Theatre.*,show1.Show_Time,show1.Show_Date, Screen.*,  Movie.* FROM Seats JOIN Screen ON Seats.Screen_ID = Screen.Screen_ID JOIN Theatre ON Screen.Theatre_ID = Theatre.Theatre_ID JOIN show1 ON Screen.Screen_ID = show1.Screen_ID JOIN Movie ON show1.Movie_ID = Movie.Movie_ID WHERE Seats.User_ID = ?;'
+        let q='SELECT Theatre.*, Movie.*, Booking.*, Screen.*, Show1.* FROM Booking JOIN Show1 ON Booking.Show_ID = Show1.Show_ID JOIN Movie ON Show1.Movie_ID = Movie.Movie_ID JOIN Screen ON Show1.Screen_ID = Screen.Screen_ID JOIN Theatre ON Screen.Theatre_ID = Theatre.Theatre_ID WHERE Booking.User_ID = ?;'
         const [response] = await pool.query(q,[id])
         res.status(200).json(response)
     }

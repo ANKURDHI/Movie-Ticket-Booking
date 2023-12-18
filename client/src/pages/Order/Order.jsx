@@ -69,6 +69,7 @@ const Order = () => {
     });
     
    if(response.data){
+    
     window.location = response.data.url
     //  navigate(`${response.data.url}`,{replace:true})
    }     

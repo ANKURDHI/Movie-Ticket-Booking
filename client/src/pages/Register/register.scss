@@ -29,6 +29,15 @@
              padding: 1.1rem;
              border-bottom: 1px solid lightgray;
              padding: 20px 10px;
+
+             &::placeholder {
+                color: red;
+                opacity: 1; /* Firefox */
+              }
+              
+              ::-ms-input-placeholder { /* Edge 12 -18 */
+                color: red;
+              }
             }
 
             button{
